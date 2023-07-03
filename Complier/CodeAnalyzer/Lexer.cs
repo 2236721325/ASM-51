@@ -61,17 +61,18 @@ namespace Complier.CodeAnalyzer
             if (Chunk[0] == '_' || char.IsLetter(Chunk[0]))
             {
                 var value = ScanIdentifier();
-                if (Constants.OpCode_Map.ContainsKey(value))
+                var higher = value.ToUpper();
+                if (Constants.OpCode_Map.ContainsKey(higher))
                 {
-                    return new Token(Constants.OpCode_Map[value],value,Line);
+                    return new Token(Constants.OpCode_Map[higher],value,Line);
                 }
-                if(Constants.Register_Map.ContainsKey(value))
+                if(Constants.Register_Map.ContainsKey(higher))
                 {
-                    return new Token(Constants.Register_Map[value], value, Line);
+                    return new Token(Constants.Register_Map[higher], value, Line);
                 }
-                if(Constants.Directive_Map.ContainsKey(value))
+                if(Constants.Directive_Map.ContainsKey(higher))
                 {
-                    return new Token(Constants.Directive_Map[value], value, Line);
+                    return new Token(Constants.Directive_Map[higher], value, Line);
                 }
                 else
                 {
@@ -104,6 +105,7 @@ namespace Complier.CodeAnalyzer
                     if (!Char.IsLetterOrDigit(Chunk[1]))
                     {
                         sb.Append(Chunk[0]);
+                        Next(1);
                         break;
                     }
                 }

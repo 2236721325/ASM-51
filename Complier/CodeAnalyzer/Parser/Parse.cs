@@ -23,7 +23,7 @@ namespace Complier.CodeAnalyzer.Parser
             return ParseBlock(); 
         }
 
-        private Block ParseBlock()
+        public Block ParseBlock()
         {
             var instructions = new List<Instruction>();
             while(true)
@@ -43,7 +43,7 @@ namespace Complier.CodeAnalyzer.Parser
 
 
 
-        private Instruction ParseEvery()
+        public Instruction ParseEvery()
         {
             var token = lexer.LookAhead();
             switch (token.Kind)
@@ -97,7 +97,7 @@ namespace Complier.CodeAnalyzer.Parser
                 case TokenKind.Directive_END:
                     return ParseDirective();
             }
-            throw new SyntaxException($"Unexpected -> {token.Value} !", token.Line);
+            throw new SyntaxException($"Unexpected ->[{token.Value}]", token.Line);
         }
         private Instruction ParseDirective()
         {

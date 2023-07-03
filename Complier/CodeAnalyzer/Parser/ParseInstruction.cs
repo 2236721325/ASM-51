@@ -342,17 +342,139 @@ namespace Complier.CodeAnalyzer.Parser
 
         private Instruction ParseOp_SUBB()
         {
-            throw new NotImplementedException();
+            var a_reg = lexer.NextTokenOfKind(TokenKind.REG_A);
+            var comma = lexer.NextTokenOfKind(TokenKind.TOKEN_SEP_COMMA);
+            var end_token = lexer.NextToken();
+
+
+
+            if (end_token.Kind == TokenKind.Number)
+            {
+                var prefix = new PrefixStructure(null, end_token);
+                return new SubB_Instruction(prefix, 1, end_token.Line);
+            }
+
+            if (end_token.Kind == TokenKind.TOKEN_OP_LEN) //#
+            {
+                var data_token = lexer.NextTokenOfKind(TokenKind.Number);
+                var prefix = new PrefixStructure(end_token, data_token);
+                return new SubB_Instruction(prefix, 3, end_token.Line);
+            }
+
+
+            if (end_token.Kind == TokenKind.TOKEN_SEP_ARE) //@
+            {
+                var reg_Ri_token = lexer.NextToken();
+                if (!TokenKindUtility.IsReg_Ri(reg_Ri_token.Kind))
+                {
+                    throw new SyntaxException($"Unexpected -> {reg_Ri_token.Value} ! Need  R0 or  R1", reg_Ri_token.Line);
+                }
+                var prefix = new PrefixStructure(end_token, reg_Ri_token);
+                return new SubB_Instruction(prefix, 2, end_token.Line);
+            }
+
+
+            if (!TokenKindUtility.IsReg_Rn(end_token.Kind))
+            {
+                throw new SyntaxException($"Unexpected -> {end_token.Value} ! Need  R0 - R7", end_token.Line);
+            }
+            var prefix_end = new PrefixStructure(null, end_token);
+
+
+            return new SubB_Instruction(prefix_end, 0, end_token.Line);
         }
 
         private Instruction ParseOp_INC()
         {
-            throw new NotImplementedException();
+            var end_token = lexer.NextToken();
+
+
+
+            if (end_token.Kind == TokenKind.Number)
+            {
+                var prefix = new PrefixStructure(null, end_token);
+                return new INC_Instruction(prefix, 2, end_token.Line);
+            }
+
+            if (end_token.Kind == TokenKind.REG_A) 
+            {
+                
+                var prefix = new PrefixStructure(null, end_token);
+                return new INC_Instruction(prefix, 0, end_token.Line);
+            }
+
+            if (end_token.Kind == TokenKind.REG_DPTR) //#
+            {
+
+                var prefix = new PrefixStructure(null, end_token);
+                return new INC_Instruction(prefix, 4, end_token.Line);
+            }
+
+
+            if (end_token.Kind == TokenKind.TOKEN_SEP_ARE) //@
+            {
+                var reg_Ri_token = lexer.NextToken();
+                if (!TokenKindUtility.IsReg_Ri(reg_Ri_token.Kind))
+                {
+                    throw new SyntaxException($"Unexpected -> {reg_Ri_token.Value} ! Need  R0 or  R1", reg_Ri_token.Line);
+                }
+                var prefix = new PrefixStructure(end_token, reg_Ri_token);
+                return new INC_Instruction(prefix, 3, end_token.Line);
+            }
+
+
+            if (!TokenKindUtility.IsReg_Rn(end_token.Kind))
+            {
+                throw new SyntaxException($"Unexpected -> {end_token.Value} ! Need  R0 - R7", end_token.Line);
+            }
+            var prefix_end = new PrefixStructure(null, end_token);
+
+
+            return new INC_Instruction(prefix_end, 1, end_token.Line);
         }
 
         private Instruction ParseOp_ADDC()
         {
-            throw new NotImplementedException();
+            var a_reg = lexer.NextTokenOfKind(TokenKind.REG_A);
+            var comma = lexer.NextTokenOfKind(TokenKind.TOKEN_SEP_COMMA);
+            var end_token = lexer.NextToken();
+
+
+
+            if (end_token.Kind == TokenKind.Number)
+            {
+                var prefix = new PrefixStructure(null, end_token);
+                return new AddC_Instruction(prefix, 1, end_token.Line);
+            }
+
+            if (end_token.Kind == TokenKind.TOKEN_OP_LEN) //#
+            {
+                var data_token = lexer.NextTokenOfKind(TokenKind.Number);
+                var prefix = new PrefixStructure(end_token, data_token);
+                return new AddC_Instruction(prefix, 3, end_token.Line);
+            }
+
+
+            if (end_token.Kind == TokenKind.TOKEN_SEP_ARE) //@
+            {
+                var reg_Ri_token = lexer.NextToken();
+                if (!TokenKindUtility.IsReg_Ri(reg_Ri_token.Kind))
+                {
+                    throw new SyntaxException($"Unexpected -> {reg_Ri_token.Value} ! Need  R0 or  R1", reg_Ri_token.Line);
+                }
+                var prefix = new PrefixStructure(end_token, reg_Ri_token);
+                return new AddC_Instruction(prefix, 2, end_token.Line);
+            }
+
+
+            if (!TokenKindUtility.IsReg_Rn(end_token.Kind))
+            {
+                throw new SyntaxException($"Unexpected -> {end_token.Value} ! Need  R0 - R7", end_token.Line);
+            }
+            var prefix_end = new PrefixStructure(null, end_token);
+
+
+            return new AddC_Instruction(prefix_end, 0, end_token.Line);
         }
 
         private Instruction ParseOp_ADD()

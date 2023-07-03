@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json.Converters;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Text.Json.Serialization;
@@ -18,14 +19,14 @@ namespace Complier.CodeAnalyzer
             return kind==TokenKind.REG_R0 || kind==TokenKind.REG_R1;
         }
 
-        public static int GetReg_Rn_index(TokenKind kind)
+        public static Byte GetReg_Rn_index(TokenKind kind)
         {
-            return (int)kind - 48;
+            return (byte)((int)kind - 48);
         }
 
 
     }
-    [JsonConverter(typeof(JsonStringEnumConverter))]
+    [JsonConverter(typeof(StringEnumConverter))]
     public enum TokenKind
     {
         EOF,//end of file
@@ -95,6 +96,7 @@ namespace Complier.CodeAnalyzer
         TOKEN_SEP_COLON,
         Directive_ORG,
         Directive_END,
-        TOKEN_SEP_ARE
+        TOKEN_SEP_ARE,
+        REG_DPTR
     }
 }

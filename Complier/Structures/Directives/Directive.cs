@@ -9,6 +9,10 @@ namespace Complier.Structures.Directives
         public Directive(int line) : base(line)
         {
         }
+        public override string ToString()
+        {
+            return "{Directive:{" + $"Line={Line}" + "} }";
+        }
     }
 
     public class Label_Directive : Directive
@@ -18,12 +22,21 @@ namespace Complier.Structures.Directives
         {
             Identifier = identifier;
         }
+
+        public override string ToString()
+        {
+            return "{Label_Directive:{" + $"Identifier={Identifier.Value},Line={Line}" + "} }";
+        }
     }
 
     public class End_Directive : Directive
     {
         public End_Directive(int line) : base(line)
         {
+        }
+        public override string ToString()
+        {
+            return "{End_Directive:{" + $"Line={Line}" + "} }";
         }
     }
 
@@ -33,6 +46,11 @@ namespace Complier.Structures.Directives
         public Org_Directive(Token address_token, int line) : base(line)
         {
             AddressToken = address_token;
+        }
+
+        public override string ToString()
+        {
+            return "{Org_Directive:{" + $"AddressValue={AddressToken.Value} ,Line={Line}" + "} }";
         }
     }
 }

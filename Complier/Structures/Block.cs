@@ -1,4 +1,4 @@
-﻿using Complier.AST.Instructions;
+﻿using Complier.Structures.Instructions;
 using System;
 using System.Collections;
 using System.Collections.Generic;

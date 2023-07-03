@@ -59,7 +59,7 @@ namespace Complier.CodeAnalyzer
         public static readonly Dictionary<string, TokenKind> Register_Map = new Dictionary<string, TokenKind>()
         {
             {"A", TokenKind.REG_A},
-            {"ACC", TokenKind.REG_ACC},
+            {"ACC",TokenKind.REG_ACC},
             {"B", TokenKind. REG_B},
             {"R0",TokenKind. REG_R0},
             {"R1",TokenKind. REG_R1},
@@ -73,6 +73,9 @@ namespace Complier.CodeAnalyzer
             {"P1",TokenKind. REG_P1},
             {"P2",TokenKind. REG_P2},
             {"P3",TokenKind. REG_P3},
+            {"DPTR",TokenKind. REG_DPTR},
+
+
         };
 
 

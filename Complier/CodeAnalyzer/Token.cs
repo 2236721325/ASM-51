@@ -1,4 +1,6 @@
-﻿namespace Complier.CodeAnalyzer
+﻿using System;
+
+namespace Complier.CodeAnalyzer
 {
     public class Token
     {
@@ -14,5 +16,10 @@
             Value = value;
             Line = line;
         }
+
+        //public override string ToString()
+        //{
+        //    return "{Token:{ " + $"TokenKind={Enum.GetName(typeof(TokenKind), Kind)}, Value={Value} , Line={Line} " + " }}";
+        //}
     }
 }

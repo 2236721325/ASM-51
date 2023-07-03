@@ -1,4 +1,5 @@
 ﻿using Complier.CodeAnalyzer;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -16,5 +17,10 @@ namespace Complier.Structures
             PrefixToken = prefixToken;
             InnerToken = innerToken;
         }
+
+        //public override string ToString()
+        //{
+        //    return "{PrefixStructure:{" + $"PrefixToken={PrefixToken} , InnerToken={InnerToken}" + "}}";
+        //}
     }
 }
