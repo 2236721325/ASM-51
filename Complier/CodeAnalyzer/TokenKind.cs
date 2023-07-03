@@ -6,6 +6,25 @@ using System.Text.Json.Serialization;
 namespace Complier.CodeAnalyzer
 {
 
+    public static class TokenKindUtility
+    {
+        public static bool IsReg_Rn(TokenKind kind)
+        {
+            var num=(int)kind;
+            return num >= 48 && num <= 55;
+        }
+        public static bool IsReg_Ri(TokenKind kind)
+        {
+            return kind==TokenKind.REG_R0 || kind==TokenKind.REG_R1;
+        }
+
+        public static int GetReg_Rn_index(TokenKind kind)
+        {
+            return (int)kind - 48;
+        }
+
+
+    }
     [JsonConverter(typeof(JsonStringEnumConverter))]
     public enum TokenKind
     {
@@ -69,12 +88,13 @@ namespace Complier.CodeAnalyzer
         REG_P1,
         REG_P2,
         REG_P3,
-        Directive_ORG,
         TOKEN_SEP_COMMA,
         TOKEN_OP_LEN,
         TOKEN_SEP_DOT,
         Number,
         TOKEN_SEP_COLON,
-        Directive_END
+        Directive_ORG,
+        Directive_END,
+        TOKEN_SEP_ARE
     }
 }

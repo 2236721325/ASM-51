@@ -51,6 +51,9 @@ namespace Complier.CodeAnalyzer
                 case '#':
                     Next(1);
                     return new Token(TokenKind.TOKEN_OP_LEN, "#", Line);
+                case '@':
+                    Next(1);
+                    return new Token(TokenKind.TOKEN_SEP_ARE, "@", Line);
                 case '.':
                         Next(1);
                         return new Token(TokenKind.TOKEN_SEP_DOT, ".", Line);
