@@ -43,9 +43,9 @@ namespace Complier.CodeAnalyzer
             {"LJMP",TokenKind. OP_LJMP},
             {"SJMP",TokenKind. OP_SJMP},
             {"JZ",TokenKind. OP_JZ},
-            {"NJZ",TokenKind. OP_NJZ},
+            {"JNZ" , TokenKind.OP_JNZ},
             {"JC",TokenKind. OP_JC},
-            {"NJC",TokenKind. OP_NJC},
+            {"JNC",TokenKind. OP_JNC},
             {"JB",TokenKind. OP_JB},
             {"JNB",TokenKind. OP_JNB},
             {"JBC",TokenKind. OP_JBC},
@@ -59,6 +59,7 @@ namespace Complier.CodeAnalyzer
         public static readonly Dictionary<string, TokenKind> Register_Map = new Dictionary<string, TokenKind>()
         {
             {"A", TokenKind.REG_A},
+            {"AB", TokenKind.REG_AB},
             {"ACC",TokenKind.REG_ACC},
             {"B", TokenKind. REG_B},
             {"R0",TokenKind. REG_R0},
@@ -69,13 +70,7 @@ namespace Complier.CodeAnalyzer
             {"R5",TokenKind. REG_R5},
             {"R6",TokenKind. REG_R6},
             {"R7",TokenKind. REG_R7},
-            {"P0",TokenKind. REG_P0},
-            {"P1",TokenKind. REG_P1},
-            {"P2",TokenKind. REG_P2},
-            {"P3",TokenKind. REG_P3},
             {"DPTR",TokenKind. REG_DPTR},
-
-
         };
 
 

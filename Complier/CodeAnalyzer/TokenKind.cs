@@ -65,9 +65,9 @@ namespace Complier.CodeAnalyzer
         OP_LJMP,
         OP_SJMP,
         OP_JZ,
-        OP_NJZ,
+        OP_JNZ,
         OP_JC,
-        OP_NJC,
+        OP_JNC,
         OP_JB,
         OP_JNB,
         OP_JBC,
@@ -84,11 +84,10 @@ namespace Complier.CodeAnalyzer
         REG_R4,
         REG_R5,
         REG_R6,
-        REG_R7,
-        REG_P0,
-        REG_P1,
-        REG_P2,
-        REG_P3,
+        REG_R7,    
+        REG_DPTR,
+        REG_AB,
+
         TOKEN_SEP_COMMA,
         TOKEN_OP_LEN,
         TOKEN_SEP_DOT,
@@ -97,6 +96,5 @@ namespace Complier.CodeAnalyzer
         Directive_ORG,
         Directive_END,
         TOKEN_SEP_ARE,
-        REG_DPTR
     }
 }

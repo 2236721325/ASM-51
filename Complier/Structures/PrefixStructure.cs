@@ -17,6 +17,11 @@ namespace Complier.Structures
             PrefixToken = prefixToken;
             InnerToken = innerToken;
         }
+        public PrefixStructure(Token innerToken)
+        {
+            PrefixToken = null;
+            InnerToken = innerToken;
+        }
 
         //public override string ToString()
         //{

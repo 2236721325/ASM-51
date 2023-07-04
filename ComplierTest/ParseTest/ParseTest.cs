@@ -84,9 +84,9 @@ inc DPTR
 END
 
 ";
-            var lexer = new Lexer(code);
+            Lexer lexer = new Lexer(code);
 
-            var parser = new Parser(lexer);
+            Parser parser = new Parser(lexer);
 
 
             while (true)
@@ -106,6 +106,93 @@ END
 
         }
 
+
+        [Fact]
+        public void Test_DEC()
+        {
+            var code = @"
+ORG 0000h
+dec a
+dec r7
+dec 0ffh
+dec @r0
+END
+";
+            Lexer lexer = new Lexer(code);
+
+            Parser parser = new Parser(lexer);
+
+
+            while (true)
+            {
+                var token = lexer.LookAhead();
+
+                if (token.Kind == TokenKind.EOF)
+                {
+                    break;
+                }
+
+                Instruction inst = parser.ParseEvery();
+
+                Output.WriteLine(inst.ToString());
+
+            }
+
+        }
+
+
+
+        [Fact]
+        public void Test_MOV()
+        {
+            var code = @"
+ORG 0000h
+mov a,r1
+mov a,r2
+mov a,r3
+mov a,0feh
+mov a,10000000b
+mov a,@r0
+mov a,@r1
+mov a,#05h
+mov r1,A
+mov r3,#05h
+mov r3,05h
+mov 05h,A
+mov 05h,R1
+mov 05h,#05h
+mov 05h,05h
+mov 05h,@r1
+mov @r0,A
+mov @r1,#05h
+mov @r1,05h
+mov DPTR,#0566h
+
+END
+";
+            Lexer lexer = new Lexer(code);
+
+            Parser parser = new Parser(lexer);
+
+
+            while (true)
+            {
+                var token = lexer.LookAhead();
+
+                if (token.Kind == TokenKind.EOF)
+                {
+                    break;
+                }
+
+                Instruction inst = parser.ParseEvery();
+
+                Output.WriteLine(inst.ToString());
+
+            }
+
+        }
+
+
     }
-    }
+}
 

@@ -16,11 +16,10 @@ namespace Complier.Helpers
         }
         public static Byte[] Zip(Byte[] bytes)
         {
-            var list = new List<byte>
-            {
-                bytes[0]
-            };
-            for (int i = 1; i < bytes.Length; i++)
+           
+            var list = new List<byte>();
+          
+            for (int i = bytes.Length-1; i>=0; i--)
             {
                 if (bytes[i]!=0)
                 {
@@ -29,10 +28,10 @@ namespace Complier.Helpers
             }
             return list.ToArray();
         }
-        public static Byte[]  NumberTokenToBytes(Token number_token)
+        public static Byte[] NumberTokenToBytes(Token number_token)
         {
             var value_str = number_token.Value;
-            if (value_str.EndsWith('b'))
+            if (Char.ToLower( value_str[value_str.Length-1])=='b')
             {
                 value_str = value_str.Substring(0, value_str.Length - 1);
 
@@ -40,13 +39,12 @@ namespace Complier.Helpers
                 int num = Convert.ToInt32(value_str, 2);
                 return Zip(BitConverter.GetBytes(num));
             }
-            if (value_str.EndsWith('h'))
+            if (Char.ToLower(value_str[value_str.Length - 1]) == 'h')
             {
                 value_str = value_str.Substring(0, value_str.Length - 1);
                 int num = int.Parse(value_str, System.Globalization.NumberStyles.AllowHexSpecifier);
                 return Zip(BitConverter.GetBytes(num));
                 // 消除多余的字节
-
             }
             var num_end = int.Parse(value_str);
             return Zip(BitConverter.GetBytes(num_end));

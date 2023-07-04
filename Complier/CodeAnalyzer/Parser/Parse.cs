@@ -82,9 +82,9 @@ namespace Complier.CodeAnalyzer.Parser
                 case TokenKind.OP_LJMP:
                 case TokenKind.OP_SJMP:
                 case TokenKind.OP_JZ:
-                case TokenKind.OP_NJZ:
+                case TokenKind.OP_JNZ:
                 case TokenKind.OP_JC:
-                case TokenKind.OP_NJC:
+                case TokenKind.OP_JNC:
                 case TokenKind.OP_JB:
                 case TokenKind.OP_JNB:
                 case TokenKind.OP_JBC:
