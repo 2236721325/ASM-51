@@ -1043,7 +1043,6 @@ namespace Complier.CodeAnalyzer.Parser
                 return new DEC_Instruction(prefix, 3, end_token.Line);
             }
 
-
             if (!TokenKindUtility.IsReg_Rn(end_token.Kind))
             {
                 throw new SyntaxException($"Unexpected -> {end_token.Value} ! Need  R0 - R7", end_token.Line);

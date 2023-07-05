@@ -96,6 +96,8 @@ namespace Complier.CodeAnalyzer
         TOKEN_SEP_COLON,
         Directive_ORG,
         Directive_END,
+        Directive_DB,
+        Directive_EQU,
         TOKEN_SEP_ARE,
         TOKEN_Symbol
     }

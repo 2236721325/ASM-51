@@ -20,6 +20,11 @@ namespace Complier.Symbols
             Symbols.Add(new Symbol(token.Value, value, type));
         }
 
+        public void AddNewSymbol(Token name_token, Token value_token, SymbolType type)
+        {
+            AddNewSymbol(name_token, value_token.NumberTokenToInt(),type);
+        }
+
         public Symbol FindSymbol(string name)
         {
             return Symbols.Find(e=>e.Name== name);

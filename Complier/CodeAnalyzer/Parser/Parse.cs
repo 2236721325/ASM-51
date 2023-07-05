@@ -103,34 +103,10 @@ namespace Complier.CodeAnalyzer.Parser
                 case TokenKind.Identifier:
                 case TokenKind.Directive_ORG:
                 case TokenKind.Directive_END:
+                case TokenKind.Directive_DB:
                     return ParseDirective();
             }
             throw new SyntaxException($"Unexpected ->[{token.Value}]", token.Line);
-        }
-        private Instruction ParseDirective()
-        {
-            var token = lexer.NextToken();
-            switch (token.Kind)
-            {
-                case TokenKind.Identifier:
-                    if (lexer.LookAhead().Kind == TokenKind.TOKEN_SEP_COLON) //:
-                    {
-                        lexer.NextToken();
-
-                        lexer.SymbolTable.AddNewSymbol(token, currentAddress, SymbolType.LABEL);
-                        return new Label_Directive(token, token.Line);
-                    }
-                    throw new SyntaxException($"Unexpected -> {token.Value} !", token.Line);              
-                case TokenKind.Directive_ORG:
-                    var address_token = lexer.NextTokenOfKind(TokenKind.Number);
-                    currentAddress = address_token.NumberTokenToInt();
-                    return new Org_Directive(address_token, token.Line);
-                case TokenKind.Directive_END:
-                    return new End_Directive(token.Line);
-               
-            }
-            throw new SyntaxException($"Unexpected -> {token.Value} !", token.Line);
-
         }
 
 

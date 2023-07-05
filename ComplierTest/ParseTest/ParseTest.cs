@@ -91,7 +91,39 @@ END
 
         }
 
+        [Fact]
+        public void Test_Derective()
+        {
+            var code = @"
+ORG 0000h
+people EQU 05h
 
+hello:
+    db 1,1,1
+    mov a,#0fh
+END
+";
+            var lexer = new Lexer(code, new Default_SymbolTable());
+
+            var parser = new Parser(lexer);
+
+
+            while (true)
+            {
+                var token = lexer.LookAhead();
+
+                if (token.Kind == TokenKind.EOF)
+                {
+                    break;
+                }
+                int line = parser.CurrentAddress;
+                Instruction inst = parser.ParseEvery();
+
+                Output.WriteLine($"[ {line.ToString("X4")} ]  " + inst.ToString());
+
+            }
+
+        }
         [Fact]
         public void Test_INC()
         {

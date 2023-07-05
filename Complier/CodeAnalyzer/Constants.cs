@@ -80,6 +80,9 @@ namespace Complier.CodeAnalyzer
         {
             {"ORG", TokenKind.Directive_ORG },
             {"END", TokenKind.Directive_END },
+            {"EQU", TokenKind.Directive_EQU },
+            {"DB", TokenKind.Directive_DB },
+
 
         };
         public static readonly char[] WhiteSpace = new char[]
