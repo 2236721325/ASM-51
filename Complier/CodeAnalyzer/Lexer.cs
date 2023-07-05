@@ -1,4 +1,5 @@
 ﻿using Complier.Exceptions;
+using Complier.Symbols;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,12 +12,16 @@ namespace Complier.CodeAnalyzer
     {
         public string Chunk { get; set; }
 
+        public SymbolTable SymbolTable { get; set; }
+
         public int Line { get; set; }
-        public Lexer(string code)
+        public Lexer(string code,SymbolTable table)
         {
+
             Chunk = code;
             Line = 1;
             nextToken = null;
+            SymbolTable = table;
         }
 
 
@@ -57,11 +62,19 @@ namespace Complier.CodeAnalyzer
                 case '.':
                         Next(1);
                         return new Token(TokenKind.TOKEN_SEP_DOT, ".", Line);
+                case '+':
+                    Next(1);
+                    return new Token(TokenKind.TOKEN_SEP_PLUS, "+", Line);
             }
             if (Chunk[0] == '_' || char.IsLetter(Chunk[0]))
             {
                 var value = ScanIdentifier();
                 var higher = value.ToUpper();
+
+                if(SymbolTable.Contains(higher))
+                {
+                    return new Token(TokenKind.TOKEN_Symbol, value, Line);
+                }
                 if (Constants.OpCode_Map.ContainsKey(higher))
                 {
                     return new Token(Constants.OpCode_Map[higher],value,Line);
@@ -100,7 +113,7 @@ namespace Complier.CodeAnalyzer
             Next(1);
             while (Chunk.Length > 0)
             {
-                if (Char.ToLower(Chunk[0])=='b' || Char.ToLower(Chunk[0])=='f')
+                if (Char.ToLower(Chunk[0])=='b' || Char.ToLower(Chunk[0])=='h')
                 {
                     if (!Char.IsLetterOrDigit(Chunk[1]))
                     {

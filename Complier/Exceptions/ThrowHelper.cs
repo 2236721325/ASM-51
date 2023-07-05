@@ -16,9 +16,14 @@ namespace Complier.Exceptions
             return new SyntaxException($"Unpected Token {kind.Value} ! Expected Token {expect_token.Value}", kind.Line);
         }
 
-        public static SyntaxException UnexpectedToken(Token kind, string expect_msg)
+        public static SyntaxException UnexpectedToken(Token kind, string msg)
         {
-            return new SyntaxException($"Unpected Token {kind.Value} !  {expect_msg}", kind.Line);
+            return new SyntaxException($"Unpected Token -> {kind.Value} ! {msg}", kind.Line);
+        }
+
+        public static DefaultException NameConflict(string name,int line)
+        {
+            return new DefaultException($" [Name Conflict]-> {name} ",line);
         }
     }
 }

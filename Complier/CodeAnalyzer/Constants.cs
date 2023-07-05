@@ -71,6 +71,8 @@ namespace Complier.CodeAnalyzer
             {"R6",TokenKind. REG_R6},
             {"R7",TokenKind. REG_R7},
             {"DPTR",TokenKind. REG_DPTR},
+            {"PC",TokenKind. REG_PC},
+
         };
 
 

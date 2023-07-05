@@ -3,6 +3,7 @@ using Complier.Exceptions;
 using Complier.Structures;
 using Complier.Structures.Directives;
 using Complier.Structures.Instructions;
+using Complier.Symbols;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -13,9 +14,14 @@ namespace Complier.CodeAnalyzer.Parser
     {
         private Lexer lexer;
 
+        private int currentAddress;
+
+        public int CurrentAddress { get => currentAddress; }
+
         public Parser(Lexer lexer)
         {
             this.lexer = lexer;
+            currentAddress = 0;
         }
 
         public Block Parse()
@@ -91,7 +97,9 @@ namespace Complier.CodeAnalyzer.Parser
                 case TokenKind.OP_CJNE:
                 case TokenKind.OP_DJNZ:
                 case TokenKind.OP_NOP:
-                    return ParseOpInstruction();
+                    var ret= ParseOpInstruction();
+                    currentAddress+= ret.GetHexCode().Length;
+                    return ret;
                 case TokenKind.Identifier:
                 case TokenKind.Directive_ORG:
                 case TokenKind.Directive_END:
@@ -105,14 +113,17 @@ namespace Complier.CodeAnalyzer.Parser
             switch (token.Kind)
             {
                 case TokenKind.Identifier:
-                    if (lexer.LookAhead().Kind == TokenKind.TOKEN_SEP_COLON)
+                    if (lexer.LookAhead().Kind == TokenKind.TOKEN_SEP_COLON) //:
                     {
                         lexer.NextToken();
+
+                        lexer.SymbolTable.AddNewSymbol(token, currentAddress, SymbolType.LABEL);
                         return new Label_Directive(token, token.Line);
                     }
                     throw new SyntaxException($"Unexpected -> {token.Value} !", token.Line);              
                 case TokenKind.Directive_ORG:
                     var address_token = lexer.NextTokenOfKind(TokenKind.Number);
+                    currentAddress = address_token.NumberTokenToInt();
                     return new Org_Directive(address_token, token.Line);
                 case TokenKind.Directive_END:
                     return new End_Directive(token.Line);

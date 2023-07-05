@@ -87,14 +87,16 @@ namespace Complier.CodeAnalyzer
         REG_R7,    
         REG_DPTR,
         REG_AB,
-
+        REG_PC,
         TOKEN_SEP_COMMA,
         TOKEN_OP_LEN,
         TOKEN_SEP_DOT,
+        TOKEN_SEP_PLUS,
         Number,
         TOKEN_SEP_COLON,
         Directive_ORG,
         Directive_END,
         TOKEN_SEP_ARE,
+        TOKEN_Symbol
     }
 }

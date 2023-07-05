@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using Xunit.Abstractions;
 using Microsoft.VisualStudio.TestPlatform.Utilities;
 using Newtonsoft.Json;
+using Complier.Symbols;
 
 namespace ComplierTest.ParseTest
 {
@@ -28,7 +29,27 @@ namespace ComplierTest.ParseTest
         public void Test_ADD()
         {
             var code = @"
-ORG 0000h
+ORG 0030h
+add a,#55h
+add a,#10000000b
+add a,0afh
+add a,R0
+add a,R1
+add a,r7
+add a,@r0
+
+
+addc a,#55h
+addc a,#10000000b
+addc a,0afh
+addc a,R0
+addc a,R1
+addc a,r7
+addc a,@r0
+
+ORG 0090h
+
+
 add a,#55h
 add a,#10000000b
 add a,0afh
@@ -48,7 +69,7 @@ addc a,@r0
 END
 
 ";
-            var lexer = new Lexer(code);
+            var lexer = new Lexer(code, new Default_SymbolTable());
 
             var parser = new Parser(lexer);
 
@@ -61,10 +82,10 @@ END
                 {
                     break;
                 }
-
+                int line = parser.CurrentAddress;
                 Instruction inst = parser.ParseEvery();
 
-                Output.WriteLine(inst.ToString());
+                Output.WriteLine($"[ {line.ToString("X2")} ]  "+ inst.ToString());
 
             }
 
@@ -84,7 +105,7 @@ inc DPTR
 END
 
 ";
-            Lexer lexer = new Lexer(code);
+            var lexer = new Lexer(code, new Default_SymbolTable());
 
             Parser parser = new Parser(lexer);
 
@@ -118,7 +139,7 @@ dec 0ffh
 dec @r0
 END
 ";
-            Lexer lexer = new Lexer(code);
+            var lexer = new Lexer(code, new Default_SymbolTable());
 
             Parser parser = new Parser(lexer);
 
@@ -170,7 +191,7 @@ mov DPTR,#0566h
 
 END
 ";
-            Lexer lexer = new Lexer(code);
+            var lexer = new Lexer(code, new Default_SymbolTable());
 
             Parser parser = new Parser(lexer);
 

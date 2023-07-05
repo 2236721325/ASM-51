@@ -49,5 +49,26 @@ namespace Complier.Helpers
             var num_end = int.Parse(value_str);
             return Zip(BitConverter.GetBytes(num_end));
         }
+
+        public static int NumberTokenToInt(Token number_token)
+        {
+            var value_str = number_token.Value;
+            if (Char.ToLower(value_str[value_str.Length - 1]) == 'b')
+            {
+                value_str = value_str.Substring(0, value_str.Length - 1);
+
+                // 将二进制字符串转换为字节数组
+               return Convert.ToInt32(value_str, 2);
+                
+            }
+            if (Char.ToLower(value_str[value_str.Length - 1]) == 'h')
+            {
+                value_str = value_str.Substring(0, value_str.Length - 1);
+                return int.Parse(value_str, System.Globalization.NumberStyles.AllowHexSpecifier);
+                // 消除多余的字节
+            }
+            var num_end = int.Parse(value_str);
+            return num_end;
+        }
     }
 }

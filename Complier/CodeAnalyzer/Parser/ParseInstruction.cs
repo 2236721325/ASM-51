@@ -236,34 +236,181 @@ namespace Complier.CodeAnalyzer.Parser
             throw new NotImplementedException();
         }
 
+
+
+        #region Data_Transfer_Op
         private Instruction ParseOp_XCHD()
         {
-            throw new NotImplementedException();
+            lexer.NextTokenOfKind(TokenKind.REG_A);
+            lexer.NextTokenOfKind(TokenKind.TOKEN_SEP_ARE);
+            var ri_token=lexer.NextToken();
+            if(!ri_token.IsReg_Ri())
+            {
+                throw ThrowHelper.UnexpectedToken(ri_token);
+            }
+            return new XCHD_Instruction(ri_token, lexer.Line);
         }
 
         private Instruction ParseOp_XCH()
         {
-            throw new NotImplementedException();
+            var reg_a_token=lexer.NextTokenOfKind(TokenKind.REG_A);
+            lexer.NextTokenOfKind(TokenKind.TOKEN_SEP_COMMA);
+            var second_token = lexer.NextToken();
+            if(second_token.IsReg_Rn())
+            {
+                return new XCH_Instruction(
+                        reg_a_token,
+                        second_token.ToPrefixStructure(),
+                        0,
+                        lexer.Line
+                    );
+            }
+            if (second_token.Kind==TokenKind.Number)
+            {
+                return new XCH_Instruction(
+                        reg_a_token,
+                        second_token.ToPrefixStructure(),
+                        1,
+                        lexer.Line
+                    );
+            }
+            if (second_token.Kind==TokenKind.TOKEN_SEP_ARE)
+            {
+                var ri_token = lexer.NextToken();
+                if(!ri_token.IsReg_Ri())
+                {
+                    throw ThrowHelper.UnexpectedToken(ri_token);
+                }
+                return new XCH_Instruction(
+                        reg_a_token,
+                        ri_token.ToPrefixStructure(second_token),
+                        2,
+                        lexer.Line
+                    );
+            }
+            throw ThrowHelper.UnexpectedToken(second_token);
         }
 
         private Instruction ParseOp_POP()
         {
-            throw new NotImplementedException();
+            var token = lexer.NextTokenOfKind(TokenKind.Number);
+            return new POP_Instruction(token, lexer.Line);
         }
 
         private Instruction ParseOp_PUSH()
         {
-            throw new NotImplementedException();
+            var token = lexer.NextTokenOfKind(TokenKind.Number);
+            return new PUSH_Instruction(token, lexer.Line);
         }
 
         private Instruction ParseOp_MOVX()
         {
-            throw new NotImplementedException();
+            var first_token = lexer.NextToken();
+
+            if(first_token.Kind==TokenKind.REG_A)
+            {
+                lexer.NextTokenOfKind(TokenKind.TOKEN_SEP_COMMA);
+                var are_token=lexer.NextTokenOfKind(TokenKind.TOKEN_SEP_ARE);
+                var end_token=lexer.NextToken();
+                if(end_token.IsReg_Ri())
+                {
+                    return new MOVX_Instruction(
+                            first_token.ToPrefixStructure(),
+                            end_token.ToPrefixStructure(are_token),
+                            0,
+                            lexer.Line
+                        );
+                }
+                if(end_token.Kind==TokenKind.REG_DPTR)
+                {
+                    return new MOVX_Instruction(
+                            first_token.ToPrefixStructure(),
+                            end_token.ToPrefixStructure(are_token),
+                            1,
+                            lexer.Line
+                        );
+                }
+
+                throw ThrowHelper.UnexpectedToken(end_token);
+            
+            }
+            
+
+            if(first_token.Kind==TokenKind.TOKEN_SEP_ARE)
+            {
+
+                var second_token=lexer.NextToken();
+
+                lexer.NextTokenOfKind(TokenKind.TOKEN_SEP_COMMA);
+                var token_Reg_A=lexer.NextTokenOfKind(TokenKind.REG_A);
+                if(second_token.IsReg_Ri())
+                {
+                    return new MOVX_Instruction(
+                            second_token.ToPrefixStructure(first_token),
+                            token_Reg_A.ToPrefixStructure(),
+                            2,
+                            lexer.Line
+
+                        );
+
+                }
+
+                if (second_token.Kind==TokenKind.REG_DPTR)
+                {
+                    return new MOVX_Instruction(
+                            second_token.ToPrefixStructure(first_token),
+                            token_Reg_A.ToPrefixStructure(),
+                            3,
+                            lexer.Line
+                        );
+
+                }
+                throw ThrowHelper.UnexpectedToken(second_token);
+
+
+
+
+
+
+
+
+            }
+            throw ThrowHelper.UnexpectedToken(first_token);
+
         }
 
         private Instruction ParseOp_MOVC()
         {
-            throw new NotImplementedException();
+            var token_Reg_A=lexer.NextTokenOfKind(TokenKind.REG_A);
+            lexer.NextTokenOfKind(TokenKind.TOKEN_SEP_COMMA);
+            lexer.NextTokenOfKind(TokenKind.TOKEN_SEP_ARE);
+            lexer.NextTokenOfKind(TokenKind.REG_A);
+            lexer.NextTokenOfKind(TokenKind.TOKEN_SEP_PLUS);
+            var end_token= lexer.NextToken();
+            if (end_token.Kind == TokenKind.REG_DPTR)
+            {
+                return new MOVC_Instruction(
+                        token_Reg_A,
+                        end_token.ToPrefixStructure(),
+                        0,
+                        lexer.Line
+                    );
+            }
+
+
+            if (end_token.Kind == TokenKind.REG_PC)
+            {
+                return new MOVC_Instruction(
+                        token_Reg_A,
+                        end_token.ToPrefixStructure(),
+                        1,
+                        lexer.Line
+                    );
+            }
+
+            throw ThrowHelper.UnexpectedToken(end_token);
+
+
         }
         private Instruction ParseOp_MOV()
         {
@@ -518,6 +665,9 @@ namespace Complier.CodeAnalyzer.Parser
             }
             throw ThrowHelper.UnexpectedToken(second_token);
         }
+
+
+        #endregion
         #region Logic_Op
         private Instruction ParseOp_SWAP()
         {

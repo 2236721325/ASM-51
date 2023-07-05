@@ -1,4 +1,5 @@
 ﻿using Complier.CodeAnalyzer;
+using Complier.Symbols;
 using System.Text.Json;
 using Xunit.Abstractions;
 
@@ -26,9 +27,7 @@ add a,R1
 add a,r7
 add a,@r0
 END";
-            var lexer = new Lexer(code);
-
-
+            var lexer = new Lexer(code,new Default_SymbolTable());
             try
             {
                 while (true)

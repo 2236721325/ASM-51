@@ -32,8 +32,6 @@ namespace Complier.Structures.Instructions
 
                 case 2:
                     var direct = ByteHelper.NumberTokenToBytes(Second.InnerToken);
-
-
                     return new Byte[]
                     {
                         0x05,

@@ -47,6 +47,17 @@ namespace Complier.CodeAnalyzer
             return (byte)((int)this.Kind - 48);
         }
 
+
+        public int NumberTokenToInt()
+        {
+            if (this.Kind != TokenKind.Number)
+            {
+                throw ThrowHelper.UnexpectedToken(this);
+            }
+
+            return ByteHelper.NumberTokenToInt(this);
+
+        }
         public Byte[] NumberTokenToBytes(int count=1)
         {
             if(this.Kind !=TokenKind.Number)
@@ -60,9 +71,6 @@ namespace Complier.CodeAnalyzer
             }
             return bytes;
         }
-        //public override string ToString()
-        //{
-        //    return "{Token:{ " + $"TokenKind={Enum.GetName(typeof(TokenKind), Kind)}, Value={Value} , Line={Line} " + " }}";
-        //}
+ 
     }
 }
