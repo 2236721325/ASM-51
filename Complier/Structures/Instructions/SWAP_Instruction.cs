@@ -5,7 +5,7 @@ namespace Complier.Structures.Instructions
 {
     public class SWAP_Instruction : Instruction
     {
-        public SWAP_Instruction(int line) : base(line)
+        public SWAP_Instruction(int line) : base(1, line)
         {
         }
         public override Byte[] GetHexCode()

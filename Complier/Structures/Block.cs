@@ -9,9 +9,9 @@ namespace Complier.Structures
     //一页代码
     public class Block  
     {
-        public IEnumerable<Instruction> Instructions { get; set; }
+        public IEnumerable<InstructionWrap> Instructions { get; set; }
 
-        public Block(IEnumerable<Instruction> instructions)
+        public Block(IEnumerable<InstructionWrap> instructions)
         {
             Instructions = instructions;
         }

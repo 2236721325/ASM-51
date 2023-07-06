@@ -8,7 +8,7 @@ namespace Complier.Structures.Directives
     public class DB_Directive : Directive
     {
         public IEnumerable<Token> NumberTokens { get; set; }
-        public DB_Directive(IEnumerable<Token> number_tokens, int line) : base(line)
+        public DB_Directive(IEnumerable<Token> number_tokens, int code_length, int line) : base(code_length, line)
         {
             NumberTokens = number_tokens;
         }

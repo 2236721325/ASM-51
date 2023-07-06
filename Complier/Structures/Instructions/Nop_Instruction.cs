@@ -5,7 +5,7 @@ namespace Complier.Structures.Instructions
 {
     public class Nop_Instruction : Instruction
     {
-        public Nop_Instruction(int line) : base(line)
+        public Nop_Instruction(int line) : base(1, line)
         {
         }
         public override Byte[] GetHexCode()

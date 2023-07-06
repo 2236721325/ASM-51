@@ -5,7 +5,7 @@ namespace Complier.Structures.Instructions
 {
     public class RRC_Instruction : Instruction
     {
-        public RRC_Instruction(int line) : base(line)
+        public RRC_Instruction(int line) : base(1, line)
         {
         }
         public override Byte[] GetHexCode()

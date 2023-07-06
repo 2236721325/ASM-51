@@ -5,7 +5,7 @@ namespace Complier.Structures.Instructions
 {
     public class CPL_Instruction : Instruction
     {
-        public CPL_Instruction(int line) : base(line)
+        public CPL_Instruction( int line) : base(1, line)
         {
         }
         public override Byte[] GetHexCode()

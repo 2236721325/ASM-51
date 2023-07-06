@@ -99,6 +99,6 @@ namespace Complier.CodeAnalyzer
         Directive_DB,
         Directive_EQU,
         TOKEN_SEP_ARE,
-        TOKEN_Symbol
+        TOKEN_Symbol=Identifier
     }
 }

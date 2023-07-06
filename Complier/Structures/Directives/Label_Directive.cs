@@ -5,7 +5,7 @@ namespace Complier.Structures.Directives
     public class Label_Directive : Directive
     {
         public Token Identifier { get; set; }
-        public Label_Directive(Token identifier, int line) : base(line)
+        public Label_Directive(Token identifier, int line) : base(0, line)
         {
             Identifier = identifier;
         }

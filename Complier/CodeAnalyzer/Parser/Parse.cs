@@ -31,17 +31,20 @@ namespace Complier.CodeAnalyzer.Parser
 
         public Block ParseBlock()
         {
-            var instructions = new List<Instruction>();
+            var instructions = new List<InstructionWrap>();
             while(true)
             {
                 var token = lexer.LookAhead();
 
-                if (token.Kind == TokenKind.EOF)
+                if (token.Kind == TokenKind.Directive_END)
                 {
                     break;
                 }
 
-                instructions.Add(ParseEvery());
+                
+                var every = ParseEvery();
+                instructions.Add(new InstructionWrap(currentAddress, every));
+                currentAddress += every.HexCodeLength;
             }
 
             return new Block ( instructions);
@@ -97,9 +100,7 @@ namespace Complier.CodeAnalyzer.Parser
                 case TokenKind.OP_CJNE:
                 case TokenKind.OP_DJNZ:
                 case TokenKind.OP_NOP:
-                    var ret= ParseOpInstruction();
-                    currentAddress+= ret.GetHexCode().Length;
-                    return ret;
+                    return ParseOpInstruction();
                 case TokenKind.Identifier:
                 case TokenKind.Directive_ORG:
                 case TokenKind.Directive_END:

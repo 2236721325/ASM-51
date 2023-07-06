@@ -11,7 +11,7 @@ namespace Complier.Structures.Instructions
 
         public PrefixStructure Third { get; set; }
         public ushort Type;
-        public MOV_Instruction(PrefixStructure second, PrefixStructure third, ushort type, int line) : base(line)
+        public MOV_Instruction(PrefixStructure second, PrefixStructure third, ushort type, int code_length, int line) : base(code_length, line)
         {
             Second = second;
             Third = third;
@@ -32,7 +32,7 @@ namespace Complier.Structures.Instructions
                     return new Byte[]
                     {
                        0xE5,
-                       Third.InnerToken.NumberTokenToBytes()[0],
+                       Third.InnerToken.GetDirectByte()
                     };
 
                 case 2:
@@ -44,7 +44,7 @@ namespace Complier.Structures.Instructions
                     return new Byte[]
                     {
                        0x74,
-                       Third.InnerToken.NumberTokenToBytes()[0],
+                       Third.InnerToken.GetDataByte()
                     };
                 case 4:
                     return new Byte[]
@@ -56,47 +56,47 @@ namespace Complier.Structures.Instructions
                     return new Byte[]
                     {
                        (byte)(0xA8+ Second.InnerToken.GetReg_Rn_index()),
-                       Third.InnerToken.NumberTokenToBytes()[0],
+                       Third.InnerToken.GetDirectByte()
                     };
                 case 6:
                     return new Byte[]
                       {
                        (byte)(0x78+ Second.InnerToken.GetReg_Rn_index()),
-                       Third.InnerToken.NumberTokenToBytes()[0],
+                       Third.InnerToken.GetDataByte()
                       };
                 case 7:
                     return new Byte[]
                     {
                        0xF5,
-                       Second.InnerToken.NumberTokenToBytes()[0],
+                       Second.InnerToken.GetDirectByte()
                     };
                 case 8:
                     return new Byte[]
                     {
                        (byte)(0x88+ Third.InnerToken.GetReg_Rn_index()),
-                       Second.InnerToken.NumberTokenToBytes()[0],
+                       Second.InnerToken.GetDirectByte(),
                     };
 
                 case 9:
                     return new Byte[]
                     {
                         0x85,
-                        Third.InnerToken.NumberTokenToBytes()[0],
-                        Second.InnerToken.NumberTokenToBytes()[0],
+                        Third.InnerToken.GetDirectByte(),
+                        Second.InnerToken.GetDirectByte()
                     };
                 case 10:
                     return new Byte[]
                      {
                             0x86,
                             0x87,
-                            Second.InnerToken.NumberTokenToBytes()[0],
+                            Second.InnerToken.GetDirectByte(),
                      };
                 case 11:
                     return new Byte[]
                      {
                             0x75,
-                            Second.InnerToken.NumberTokenToBytes()[0],
-                            Third.InnerToken.NumberTokenToBytes()[0],
+                            Second.InnerToken.GetDirectByte(),
+                            Third.InnerToken.GetDataByte()
                      };
                 case 12:
                     return new Byte[]
@@ -109,14 +109,14 @@ namespace Complier.Structures.Instructions
                      {
                             0xA6,
                             0xA7,
-                            Third.InnerToken.NumberTokenToBytes()[0],
+                            Third.InnerToken.GetDirectByte(),
                      };
                 case 14:
                     return new Byte[]
                      {
                             0x76,
                             0x77,
-                            Third.InnerToken.NumberTokenToBytes()[0],
+                            Third.InnerToken.GetDataByte()
 
                      };
                 default:
@@ -124,9 +124,8 @@ namespace Complier.Structures.Instructions
                     {
                         0x90
                     };
-                    bytes.AddRange(Third.InnerToken.NumberTokenToBytes(2));
+                    bytes.AddRange(Third.InnerToken.GetData16Byte());
                     return bytes.ToArray();
-
             }
         }
 

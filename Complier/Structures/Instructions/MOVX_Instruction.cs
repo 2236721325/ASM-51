@@ -10,7 +10,7 @@ namespace Complier.Structures.Instructions
 
         public PrefixStructure Third { get; set; }
         public ushort Type;
-        public MOVX_Instruction(PrefixStructure second, PrefixStructure third, ushort type, int line) : base(line)
+        public MOVX_Instruction(PrefixStructure second, PrefixStructure third, ushort type, int line) : base(1, line)
         {
             Second = second;
             Third = third;

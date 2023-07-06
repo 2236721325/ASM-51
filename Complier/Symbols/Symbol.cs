@@ -10,7 +10,7 @@ namespace Complier.Symbols
         public string Name { get; set; }
 
         public int Value { get; set; }
-        SymbolType Type { get; set; }
+        public SymbolType Type { get; set; }
 
         public Symbol(string name, int value, SymbolType type)
         {

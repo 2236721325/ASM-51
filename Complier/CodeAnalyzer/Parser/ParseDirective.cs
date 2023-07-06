@@ -38,9 +38,7 @@ namespace Complier.CodeAnalyzer.Parser
                 case TokenKind.Directive_END:
                     return new End_Directive(token.Line);
                 case TokenKind.Directive_DB:
-                    var db= ParseDirective_DB();
-                    currentAddress += db.GetHexCode().Length;
-                    return db;
+                    return ParseDirective_DB();
 
             }
             throw new SyntaxException($"Unexpected -> {token.Value} !", token.Line);
@@ -49,8 +47,10 @@ namespace Complier.CodeAnalyzer.Parser
 
         private Directive ParseDirective_DB()
         {
-            var number_tokens = new List<Token>();
-            number_tokens.Add(lexer.NextTokenOfKind(TokenKind.Number));
+            var number_tokens = new List<Token>
+            {
+                lexer.NextTokenOfKind(TokenKind.Number)
+            };
             while (true)
             {
                 var next_token = lexer.LookAhead();
@@ -64,8 +64,7 @@ namespace Complier.CodeAnalyzer.Parser
                     break;
                 }
             }
-
-            return new DB_Directive(number_tokens, lexer.Line);
+            return new DB_Directive(number_tokens,number_tokens.Count, lexer.Line);
         }
 
         

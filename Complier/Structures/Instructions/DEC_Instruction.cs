@@ -12,7 +12,7 @@ namespace Complier.Structures.Instructions
 
 
         public ushort Type;
-        public DEC_Instruction(PrefixStructure second, ushort type, int line) : base(line)
+        public DEC_Instruction(PrefixStructure second, ushort type, int code_length, int line) : base(code_length, line)
         {
             Second = second;
             Type = type;
@@ -29,19 +29,19 @@ namespace Complier.Structures.Instructions
                     };
 
                 case 1:
-                   
-                    return new byte[] { (byte)(0x18+ TokenKindUtility.GetReg_Rn_index(Second.InnerToken.Kind)  )};
+
+                    return new byte[] { (byte)(0x18 + Second.InnerToken.GetReg_Rn_index()) };
 
                 case 2:
-
-                    var direct = ByteHelper.NumberTokenToBytes(Second.InnerToken);
-                    if (direct.Length != 1)
+                    var direct = Second.InnerToken.GetDirectByte();
+                    return new Byte[]
                     {
-                        throw new SyntaxException("The direct is must 1 byte -> DEC direct ", Second.InnerToken.Line);
-                    }
-                    return new byte[] { 0x15, direct[0] };
+                        0x15,
+                        direct
+                    };
                 default:
-                    return new byte[] { (byte)(0x16 + TokenKindUtility.GetReg_Rn_index(Second.InnerToken.Kind)) };
+                    return new byte[] { (byte)(0x16 + Second.InnerToken.GetReg_Rn_index()) };
+             
             }
         }
 

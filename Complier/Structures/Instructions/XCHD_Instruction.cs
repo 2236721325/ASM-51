@@ -8,7 +8,7 @@ namespace Complier.Structures.Instructions
     {
 
         public Token Ri_Token { get; set; }
-        public XCHD_Instruction(Token ri_token,int line) : base(line)
+        public XCHD_Instruction(Token ri_token, int line) : base(1, line)
         {
             Ri_Token = ri_token;
         }
@@ -24,7 +24,7 @@ namespace Complier.Structures.Instructions
 
         public override string ToString()
         {
-            return "{XCH_Instruction:{" + $"HexCode={GetHexCode().GetString()} ,Line={Line}" + "} }";
+            return "{XCHD_Instruction:{" + $"HexCode={GetHexCode().GetString()} ,Line={Line}" + "} }";
         }
     }
 

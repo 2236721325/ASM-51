@@ -262,15 +262,17 @@ namespace Complier.CodeAnalyzer.Parser
                         reg_a_token,
                         second_token.ToPrefixStructure(),
                         0,
+                        1,
                         lexer.Line
                     );
             }
-            if (second_token.Kind==TokenKind.Number)
+            if (second_token.IsNumberOrSymbol())
             {
                 return new XCH_Instruction(
                         reg_a_token,
                         second_token.ToPrefixStructure(),
                         1,
+                        2,
                         lexer.Line
                     );
             }
@@ -285,6 +287,7 @@ namespace Complier.CodeAnalyzer.Parser
                         reg_a_token,
                         ri_token.ToPrefixStructure(second_token),
                         2,
+                        1,
                         lexer.Line
                     );
             }
@@ -293,13 +296,13 @@ namespace Complier.CodeAnalyzer.Parser
 
         private Instruction ParseOp_POP()
         {
-            var token = lexer.NextTokenOfKind(TokenKind.Number);
+            var token = lexer.NextTokenOfNumberOrSymbol();
             return new POP_Instruction(token, lexer.Line);
         }
 
         private Instruction ParseOp_PUSH()
         {
-            var token = lexer.NextTokenOfKind(TokenKind.Number);
+            var token = lexer.NextTokenOfNumberOrSymbol();
             return new PUSH_Instruction(token, lexer.Line);
         }
 
@@ -430,16 +433,18 @@ namespace Complier.CodeAnalyzer.Parser
                         second_token.ToPrefixStructure(),
                         third_token.ToPrefixStructure(),
                         0,
+                        1,
                         second_token.Line
                         );
                 }
 
-                if (third_token.Kind == TokenKind.Number)
+                if (third_token.IsNumberOrSymbol())
                 {
                     return new MOV_Instruction(
                         second_token.ToPrefixStructure(),
                         third_token.ToPrefixStructure(),
                         1,
+                        2,
                         second_token.Line
                         );
                 }
@@ -456,18 +461,20 @@ namespace Complier.CodeAnalyzer.Parser
                         second_token.ToPrefixStructure(),
                         token_Ri.ToPrefixStructure(third_token),
                         2,
+                        1,
                         second_token.Line
                         );
                 }
 
                 if (third_token.Kind == TokenKind.TOKEN_OP_LEN) //#
                 {
-                    var data = lexer.NextTokenOfKind(TokenKind.Number);
+                    var data = lexer.NextTokenOfNumberOrSymbol();
 
                     return new MOV_Instruction(
                         second_token.ToPrefixStructure(),
                         data.ToPrefixStructure(third_token),
                         3,
+                        2,
                         second_token.Line
                         );
                 }
@@ -489,16 +496,18 @@ namespace Complier.CodeAnalyzer.Parser
                         second_token.ToPrefixStructure(),
                         third_token.ToPrefixStructure(),
                         4,
+                        1,
                         second_token.Line
                         );
                 }
 
-                if (third_token.Kind == TokenKind.Number)
+                if (third_token.IsNumberOrSymbol())
                 {
                     return new MOV_Instruction(
                         second_token.ToPrefixStructure(),
                         third_token.ToPrefixStructure(),
                         5,
+                        2,
                         second_token.Line
                         );
                 }
@@ -508,12 +517,13 @@ namespace Complier.CodeAnalyzer.Parser
 
                 if (third_token.Kind == TokenKind.TOKEN_OP_LEN) //#
                 {
-                    var data = lexer.NextTokenOfKind(TokenKind.Number);
+                    var data = lexer.NextTokenOfNumberOrSymbol();
 
                     return new MOV_Instruction(
                         second_token.ToPrefixStructure(),
                         data.ToPrefixStructure(third_token),
                         6,
+                        2,
                         second_token.Line
                         );
                 }
@@ -522,7 +532,7 @@ namespace Complier.CodeAnalyzer.Parser
             }
 
 
-            if (second_token.Kind == TokenKind.Number)
+            if (second_token.IsNumberOrSymbol())
             {
                 lexer.NextTokenOfKind(TokenKind.TOKEN_SEP_COMMA);
 
@@ -533,6 +543,7 @@ namespace Complier.CodeAnalyzer.Parser
                       second_token.ToPrefixStructure(),
                       third_token.ToPrefixStructure(),
                       7,
+                      2,
                       lexer.Line
                       );
                 }
@@ -542,16 +553,18 @@ namespace Complier.CodeAnalyzer.Parser
                       second_token.ToPrefixStructure(),
                       third_token.ToPrefixStructure(),
                       8,
+                      2,
                       lexer.Line
                       );
                 }
 
-                if (third_token.Kind==TokenKind.Number)
+                if (third_token.IsNumberOrSymbol())
                 {
                     return new MOV_Instruction(
                       second_token.ToPrefixStructure(),
                       third_token.ToPrefixStructure(),
                       9,
+                      3,
                       lexer.Line
                       );
                 }
@@ -567,17 +580,19 @@ namespace Complier.CodeAnalyzer.Parser
                       second_token.ToPrefixStructure(),
                       ri_token.ToPrefixStructure(third_token),
                       10,
+                      2,
                       lexer.Line
                       );
                 }
 
                 if (third_token.Kind == TokenKind.TOKEN_OP_LEN)//#
                 {
-                    var data_token = lexer.NextTokenOfKind(TokenKind.Number);
+                    var data_token = lexer.NextTokenOfNumberOrSymbol();
                     return new MOV_Instruction(
                       second_token.ToPrefixStructure(),
                       data_token.ToPrefixStructure(third_token),
                       11,
+                      3,
                       lexer.Line
                       );
                 }
@@ -607,27 +622,30 @@ namespace Complier.CodeAnalyzer.Parser
                      token_Ri.ToPrefixStructure(second_token),
                      third_token.ToPrefixStructure(),
                      12,
+                     1,
                      lexer.Line
                      );
                 }
 
-                if (third_token.Kind == TokenKind.Number)
+                if (third_token.IsNumberOrSymbol())
                 {
                     return new MOV_Instruction(
                      token_Ri.ToPrefixStructure(second_token),
                      third_token.ToPrefixStructure(),
                      13,
+                     2,
                      lexer.Line
                      );
                 }
 
                 if (third_token.Kind == TokenKind.TOKEN_OP_LEN) //#
                 {
-                    var data_token=lexer.NextTokenOfKind(TokenKind.Number);
+                    var data_token=lexer.NextTokenOfNumberOrSymbol();
                     return new MOV_Instruction(
                      token_Ri.ToPrefixStructure(second_token),
                      data_token.ToPrefixStructure(third_token),
                      14,
+                     2,
                      lexer.Line
                      );
                 }
@@ -652,12 +670,13 @@ namespace Complier.CodeAnalyzer.Parser
             {
                 lexer.NextTokenOfKind(TokenKind.TOKEN_SEP_COMMA);
                 var third_token=lexer.NextTokenOfKind(TokenKind.TOKEN_OP_LEN);
-                var data_token=lexer.NextTokenOfKind(TokenKind.Number);
+                var data_token = lexer.NextTokenOfNumberOrSymbol();
 
                 return new MOV_Instruction(
                      second_token.ToPrefixStructure(),
                      data_token.ToPrefixStructure(third_token),
                      15,
+                     3,
                      lexer.Line
                      );
 
@@ -727,16 +746,18 @@ namespace Complier.CodeAnalyzer.Parser
                         second_token.ToPrefixStructure(),
                         third_token.ToPrefixStructure(),
                         0,
+                        1,
                         second_token.Line
                         );
                 }
 
-                if (third_token.Kind == TokenKind.Number)
+                if (third_token.IsNumberOrSymbol())
                 {
                     return new XRL_Instruction(
                         second_token.ToPrefixStructure(),
                         third_token.ToPrefixStructure(),
                         1,
+                        2,
                         second_token.Line
                         );
                 }
@@ -753,18 +774,20 @@ namespace Complier.CodeAnalyzer.Parser
                         second_token.ToPrefixStructure(),
                         token_Ri.ToPrefixStructure(third_token),
                         2,
+                        1,
                         second_token.Line
                         );
                 }
 
                 if (third_token.Kind == TokenKind.TOKEN_OP_LEN) //#
                 {
-                    var data = lexer.NextTokenOfKind(TokenKind.Number);
+                    var data = lexer.NextTokenOfNumberOrSymbol();
 
                     return new XRL_Instruction(
                         second_token.ToPrefixStructure(),
                         data.ToPrefixStructure(third_token),
                         3,
+                        2,
                         second_token.Line
                         );
                 }
@@ -773,7 +796,7 @@ namespace Complier.CodeAnalyzer.Parser
 
             }
 
-            if (second_token.Kind == TokenKind.Number)
+            if (second_token.IsNumberOrSymbol())
             {
                 var third_token = lexer.NextToken();
                 if (third_token.Kind == TokenKind.REG_A)
@@ -782,17 +805,19 @@ namespace Complier.CodeAnalyzer.Parser
                       second_token.ToPrefixStructure(),
                       third_token.ToPrefixStructure(),
                       4,
+                      2,
                       lexer.Line
                       );
                 }
 
                 if (third_token.Kind == TokenKind.TOKEN_OP_LEN)//#
                 {
-                    var data_token = lexer.NextTokenOfKind(TokenKind.Number);
+                    var data_token = lexer.NextTokenOfNumberOrSymbol();
                     return new XRL_Instruction(
                       second_token.ToPrefixStructure(),
                       data_token.ToPrefixStructure(third_token),
                       5,
+                      3,
                       lexer.Line
                       );
                 }
@@ -820,16 +845,18 @@ namespace Complier.CodeAnalyzer.Parser
                         second_token.ToPrefixStructure(),
                         third_token.ToPrefixStructure(),
                         0,
+                        1,
                         second_token.Line
                         );
                 }
 
-                if (third_token.Kind == TokenKind.Number)
+                if (third_token.IsNumberOrSymbol())
                 {
                     return new ORL_Instruction(
                         second_token.ToPrefixStructure(),
                         third_token.ToPrefixStructure(),
                         1,
+                        2,
                         second_token.Line
                         );
                 }
@@ -846,18 +873,20 @@ namespace Complier.CodeAnalyzer.Parser
                         second_token.ToPrefixStructure(),
                         token_Ri.ToPrefixStructure(third_token),
                         2,
+                        1,
                         second_token.Line
                         );
                 }
 
                 if (third_token.Kind == TokenKind.TOKEN_OP_LEN) //#
                 {
-                    var data = lexer.NextTokenOfKind(TokenKind.Number);
+                    var data = lexer.NextTokenOfNumberOrSymbol();
 
                     return new ORL_Instruction(
                         second_token.ToPrefixStructure(),
                         data.ToPrefixStructure(third_token),
                         3,
+                        2,
                         second_token.Line
                         );
                 }
@@ -866,7 +895,7 @@ namespace Complier.CodeAnalyzer.Parser
 
             }
 
-            if (second_token.Kind == TokenKind.Number)
+            if (second_token.IsNumberOrSymbol())
             {
                 var third_token = lexer.NextToken();
                 if (third_token.Kind == TokenKind.REG_A)
@@ -875,17 +904,19 @@ namespace Complier.CodeAnalyzer.Parser
                       second_token.ToPrefixStructure(),
                       third_token.ToPrefixStructure(),
                       4,
+                      2,
                       lexer.Line
                       );
                 }
 
                 if (third_token.Kind == TokenKind.TOKEN_OP_LEN)//#
                 {
-                    var data_token = lexer.NextTokenOfKind(TokenKind.Number);
+                    var data_token = lexer.NextTokenOfNumberOrSymbol();
                     return new ORL_Instruction(
                       second_token.ToPrefixStructure(),
                       data_token.ToPrefixStructure(third_token),
                       5,
+                      3,
                       lexer.Line
                       );
                 }
@@ -914,16 +945,18 @@ namespace Complier.CodeAnalyzer.Parser
                         second_token.ToPrefixStructure(),
                         third_token.ToPrefixStructure(),
                         0, 
+                        1,
                         second_token.Line
                         );
                 }
 
-                if (third_token.Kind==TokenKind.Number)
+                if (third_token.IsNumberOrSymbol())
                 {
                     return new ANL_Instruction(
                         second_token.ToPrefixStructure(),
                         third_token.ToPrefixStructure(),
                         1,
+                        2,
                         second_token.Line
                         );
                 }
@@ -931,27 +964,25 @@ namespace Complier.CodeAnalyzer.Parser
 
                 if (third_token.Kind == TokenKind.TOKEN_SEP_ARE)
                 {
-                    var token_Ri=lexer.NextToken();
-                    if(!TokenKindUtility.IsReg_Ri(token_Ri.Kind))
-                    {
-                        throw ThrowHelper.UnexpectedToken(third_token,"Ri");
-                    }
+                    var token_Ri = lexer.NextTokenOfRi();
                     return new ANL_Instruction(
                         second_token.ToPrefixStructure(),
                         token_Ri.ToPrefixStructure(third_token),
                         2,
+                        1,
                         second_token.Line
                         );
                 }
 
                 if (third_token.Kind == TokenKind.TOKEN_OP_LEN) //#
                 {
-                    var data = lexer.NextTokenOfKind(TokenKind.Number);
+                    var data = lexer.NextTokenOfNumberOrSymbol();
                  
                     return new ANL_Instruction(
                         second_token.ToPrefixStructure(),
                         data.ToPrefixStructure(third_token),
                         3,
+                        2,
                         second_token.Line
                         );
                 }
@@ -960,7 +991,7 @@ namespace Complier.CodeAnalyzer.Parser
 
             }
 
-            if (second_token.Kind == TokenKind.Number)
+            if (second_token.IsNumberOrSymbol())
             {
                 var third_token = lexer.NextToken();
                 if(third_token.Kind==TokenKind.REG_A)
@@ -969,17 +1000,19 @@ namespace Complier.CodeAnalyzer.Parser
                       second_token.ToPrefixStructure(),
                       third_token.ToPrefixStructure(),
                       4,
+                      2,
                       lexer.Line
                       );
                 }
 
                 if (third_token.Kind == TokenKind.TOKEN_OP_LEN)//#
                 {
-                    var data_token = lexer.NextTokenOfKind(TokenKind.Number);
+                    var data_token = lexer.NextTokenOfNumberOrSymbol();
                     return new ANL_Instruction(
                       second_token.ToPrefixStructure(),
                       data_token.ToPrefixStructure(third_token),
                       5,
+                      3,
                       lexer.Line
                       );
                 }
@@ -1017,41 +1050,73 @@ namespace Complier.CodeAnalyzer.Parser
 
 
 
-            if (end_token.Kind == TokenKind.Number)
-            {
-                var prefix = new PrefixStructure(null, end_token);
-                return new DEC_Instruction(prefix, 2, end_token.Line);
-            }
-
             if (end_token.Kind == TokenKind.REG_A)
             {
 
-                var prefix = new PrefixStructure(null, end_token);
-                return new DEC_Instruction(prefix, 0, end_token.Line);
+                return new DEC_Instruction(end_token.ToPrefixStructure(), 0,1, lexer.Line);
             }
 
-         
+            if (end_token.IsReg_Rn())
+            {
+                return new DEC_Instruction(end_token.ToPrefixStructure(), 1,1, lexer.Line);
+            }
+            if (end_token.IsNumberOrSymbol())
+            {
+                return new DEC_Instruction(end_token.ToPrefixStructure(), 2,2, lexer.Line);
+            }
 
             if (end_token.Kind == TokenKind.TOKEN_SEP_ARE) //@
             {
-                var reg_Ri_token = lexer.NextToken();
-                if (!TokenKindUtility.IsReg_Ri(reg_Ri_token.Kind))
-                {
-                    throw new SyntaxException($"Unexpected -> {reg_Ri_token.Value} ! Need  R0 or  R1", reg_Ri_token.Line);
-                }
-                var prefix = new PrefixStructure(end_token, reg_Ri_token);
-                return new DEC_Instruction(prefix, 3, end_token.Line);
+                var reg_Ri_token = lexer.NextTokenOfRi();
+                return new DEC_Instruction(reg_Ri_token.ToPrefixStructure(end_token), 3,1, lexer.Line);
             }
-
-            if (!TokenKindUtility.IsReg_Rn(end_token.Kind))
-            {
-                throw new SyntaxException($"Unexpected -> {end_token.Value} ! Need  R0 - R7", end_token.Line);
-            }
-            var prefix_end = new PrefixStructure(null, end_token);
+         
 
 
-            return new DEC_Instruction(prefix_end, 1, end_token.Line);
+            throw ThrowHelper.UnexpectedToken(end_token);
+
         }
+
+
+        private Instruction ParseOp_INC()
+        {
+            var end_token = lexer.NextToken();
+
+         
+
+            if (end_token.Kind == TokenKind.REG_A) 
+            {
+                
+                return new INC_Instruction(end_token.ToPrefixStructure(), 0,1, lexer.Line);
+            }
+
+            if (end_token.IsReg_Rn())
+            {
+                return new INC_Instruction(end_token.ToPrefixStructure(), 1,1, lexer.Line);
+            }
+            if(end_token.IsNumberOrSymbol())
+            {
+                return new INC_Instruction(end_token.ToPrefixStructure(), 2,2, lexer.Line);
+            }
+
+            if (end_token.Kind == TokenKind.TOKEN_SEP_ARE) //@
+            {
+                var reg_Ri_token = lexer.NextTokenOfRi();
+              
+                return new INC_Instruction(reg_Ri_token.ToPrefixStructure(end_token), 3,1, lexer.Line);
+            }
+            if (end_token.Kind == TokenKind.REG_DPTR)
+            {
+
+                return new INC_Instruction(end_token.ToPrefixStructure(), 4,1, lexer.Line);
+            }
+
+
+            throw ThrowHelper.UnexpectedToken(end_token);
+
+        }
+
+
 
         private Instruction ParseOp_SUBB()
         {
@@ -1060,90 +1125,29 @@ namespace Complier.CodeAnalyzer.Parser
             var end_token = lexer.NextToken();
 
 
-
-            if (end_token.Kind == TokenKind.Number)
+            if (end_token.IsReg_Rn())
             {
-                var prefix = new PrefixStructure(null, end_token);
-                return new SubB_Instruction(prefix, 1, end_token.Line);
+                return new SUBB_Instruction(end_token.ToPrefixStructure(), 0,1, lexer.Line);
             }
+            if (end_token.IsNumberOrSymbol())
+            {
+                return new SUBB_Instruction(end_token.ToPrefixStructure(), 1,2, lexer.Line);
+            }
+            if (end_token.Kind == TokenKind.TOKEN_SEP_ARE) //@
+            {
+                var reg_Ri_token = lexer.NextTokenOfRi();
+           
+                return new SUBB_Instruction(reg_Ri_token.ToPrefixStructure(end_token), 2,1, end_token.Line);
+            }
+
 
             if (end_token.Kind == TokenKind.TOKEN_OP_LEN) //#
             {
-                var data_token = lexer.NextTokenOfKind(TokenKind.Number);
-                var prefix = new PrefixStructure(end_token, data_token);
-                return new SubB_Instruction(prefix, 3, end_token.Line);
+                var data_token = lexer.NextTokenOfNumberOrSymbol();
+                return new SUBB_Instruction(data_token.ToPrefixStructure(end_token), 3,2, end_token.Line);
             }
 
-
-            if (end_token.Kind == TokenKind.TOKEN_SEP_ARE) //@
-            {
-                var reg_Ri_token = lexer.NextToken();
-                if (!TokenKindUtility.IsReg_Ri(reg_Ri_token.Kind))
-                {
-                    throw new SyntaxException($"Unexpected -> {reg_Ri_token.Value} ! Need  R0 or  R1", reg_Ri_token.Line);
-                }
-                var prefix = new PrefixStructure(end_token, reg_Ri_token);
-                return new SubB_Instruction(prefix, 2, end_token.Line);
-            }
-
-
-            if (!TokenKindUtility.IsReg_Rn(end_token.Kind))
-            {
-                throw new SyntaxException($"Unexpected -> {end_token.Value} ! Need  R0 - R7", end_token.Line);
-            }
-            var prefix_end = new PrefixStructure(null, end_token);
-
-
-            return new SubB_Instruction(prefix_end, 0, end_token.Line);
-        }
-
-        private Instruction ParseOp_INC()
-        {
-            var end_token = lexer.NextToken();
-
-
-
-            if (end_token.Kind == TokenKind.Number)
-            {
-                var prefix = new PrefixStructure(null, end_token);
-                return new INC_Instruction(prefix, 2, end_token.Line);
-            }
-
-            if (end_token.Kind == TokenKind.REG_A) 
-            {
-                
-                var prefix = new PrefixStructure(null, end_token);
-                return new INC_Instruction(prefix, 0, end_token.Line);
-            }
-
-            if (end_token.Kind == TokenKind.REG_DPTR) //#
-            {
-
-                var prefix = new PrefixStructure(null, end_token);
-                return new INC_Instruction(prefix, 4, end_token.Line);
-            }
-
-
-            if (end_token.Kind == TokenKind.TOKEN_SEP_ARE) //@
-            {
-                var reg_Ri_token = lexer.NextToken();
-                if (!TokenKindUtility.IsReg_Ri(reg_Ri_token.Kind))
-                {
-                    throw new SyntaxException($"Unexpected -> {reg_Ri_token.Value} ! Need  R0 or  R1", reg_Ri_token.Line);
-                }
-                var prefix = new PrefixStructure(end_token, reg_Ri_token);
-                return new INC_Instruction(prefix, 3, end_token.Line);
-            }
-
-
-            if (!TokenKindUtility.IsReg_Rn(end_token.Kind))
-            {
-                throw new SyntaxException($"Unexpected -> {end_token.Value} ! Need  R0 - R7", end_token.Line);
-            }
-            var prefix_end = new PrefixStructure(null, end_token);
-
-
-            return new INC_Instruction(prefix_end, 1, end_token.Line);
+            throw ThrowHelper.UnexpectedToken(end_token);
         }
 
         private Instruction ParseOp_ADDC()
@@ -1153,41 +1157,29 @@ namespace Complier.CodeAnalyzer.Parser
             var end_token = lexer.NextToken();
 
 
-
-            if (end_token.Kind == TokenKind.Number)
+            if (end_token.IsReg_Rn())
             {
-                var prefix = new PrefixStructure(null, end_token);
-                return new AddC_Instruction(prefix, 1, end_token.Line);
+                return new ADDC_Instruction(end_token.ToPrefixStructure(), 0,1, lexer.Line);
             }
+            if (end_token.IsNumberOrSymbol())
+            {
+                return new ADDC_Instruction(end_token.ToPrefixStructure(), 1,2, lexer.Line);
+            }
+            if (end_token.Kind == TokenKind.TOKEN_SEP_ARE) //@
+            {
+                var reg_Ri_token = lexer.NextTokenOfRi();
+            
+                return new ADDC_Instruction(reg_Ri_token.ToPrefixStructure(end_token), 2,1, end_token.Line);
+            }
+
 
             if (end_token.Kind == TokenKind.TOKEN_OP_LEN) //#
             {
-                var data_token = lexer.NextTokenOfKind(TokenKind.Number);
-                var prefix = new PrefixStructure(end_token, data_token);
-                return new AddC_Instruction(prefix, 3, end_token.Line);
+                var data_token = lexer.NextTokenOfNumberOrSymbol();
+                return new ADDC_Instruction(data_token.ToPrefixStructure(end_token), 3, 2,end_token.Line);
             }
 
-
-            if (end_token.Kind == TokenKind.TOKEN_SEP_ARE) //@
-            {
-                var reg_Ri_token = lexer.NextToken();
-                if (!TokenKindUtility.IsReg_Ri(reg_Ri_token.Kind))
-                {
-                    throw new SyntaxException($"Unexpected -> {reg_Ri_token.Value} ! Need  R0 or  R1", reg_Ri_token.Line);
-                }
-                var prefix = new PrefixStructure(end_token, reg_Ri_token);
-                return new AddC_Instruction(prefix, 2, end_token.Line);
-            }
-
-
-            if (!TokenKindUtility.IsReg_Rn(end_token.Kind))
-            {
-                throw new SyntaxException($"Unexpected -> {end_token.Value} ! Need  R0 - R7", end_token.Line);
-            }
-            var prefix_end = new PrefixStructure(null, end_token);
-
-
-            return new AddC_Instruction(prefix_end, 0, end_token.Line);
+            throw ThrowHelper.UnexpectedToken(end_token);
         }
 
         private Instruction ParseOp_ADD()
@@ -1197,41 +1189,29 @@ namespace Complier.CodeAnalyzer.Parser
             var end_token = lexer.NextToken();
 
 
-            
-            if(end_token.Kind==TokenKind.Number)
+            if(end_token.IsReg_Rn())
             {
-                var prefix = new PrefixStructure(null, end_token);
-                return new Add_Instruction(prefix, 1, end_token.Line);
+                return new ADD_Instruction(end_token.ToPrefixStructure(), 0,1, lexer.Line);
             }
-
-            if(end_token.Kind==TokenKind.TOKEN_OP_LEN) //#
+            if (end_token.IsNumberOrSymbol())
             {
-                var data_token = lexer.NextTokenOfKind(TokenKind.Number);
-                var prefix=new PrefixStructure(end_token, data_token);
-                return new Add_Instruction(prefix, 3, end_token.Line);
+                return new ADD_Instruction(end_token.ToPrefixStructure(), 1,2, lexer.Line);
             }
-
-
             if (end_token.Kind == TokenKind.TOKEN_SEP_ARE) //@
             {
-                var reg_Ri_token = lexer.NextToken();
-                if(!TokenKindUtility.IsReg_Ri(reg_Ri_token.Kind))
-                {
-                    throw new SyntaxException($"Unexpected -> {reg_Ri_token.Value} ! Need  R0 or  R1", reg_Ri_token.Line);
-                }
-                var prefix = new PrefixStructure(end_token, reg_Ri_token);
-                return new Add_Instruction(prefix, 2, end_token.Line);
+                var reg_Ri_token = lexer.NextTokenOfRi();
+
+                return new ADD_Instruction(reg_Ri_token.ToPrefixStructure(end_token), 2,1, end_token.Line);
             }
 
 
-            if(!TokenKindUtility.IsReg_Rn(end_token.Kind))
+            if (end_token.Kind == TokenKind.TOKEN_OP_LEN) //#
             {
-                throw new SyntaxException($"Unexpected -> {end_token.Value} ! Need  R0 - R7", end_token.Line);
+                var data_token = lexer.NextTokenOfNumberOrSymbol();
+                return new ADD_Instruction(data_token.ToPrefixStructure(end_token), 3,2, end_token.Line);
             }
-            var prefix_end = new PrefixStructure(null, end_token);
 
-
-            return new Add_Instruction(prefix_end, 0, end_token.Line);
+            throw ThrowHelper.UnexpectedToken(end_token);
         }
 
 

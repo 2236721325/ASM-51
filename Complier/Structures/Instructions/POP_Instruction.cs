@@ -8,7 +8,7 @@ namespace Complier.Structures.Instructions
     {
 
         public Token Direct { get; set; }
-        public POP_Instruction(Token direct, int line) : base(line)
+        public POP_Instruction(Token direct, int line) : base(2, line)
         {
             Direct = direct;
         }
@@ -18,7 +18,7 @@ namespace Complier.Structures.Instructions
             return new byte[]
             {
                 0xD0,
-                Direct.NumberTokenToBytes()[0],
+                Direct.GetDirectByte()
             };
         }
 

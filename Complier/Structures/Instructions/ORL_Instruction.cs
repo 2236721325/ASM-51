@@ -10,7 +10,7 @@ namespace Complier.Structures.Instructions
 
         public PrefixStructure Third { get; set; }
         public ushort Type;
-        public ORL_Instruction(PrefixStructure second, PrefixStructure third, ushort type, int line) : base(line)
+        public ORL_Instruction(PrefixStructure second, PrefixStructure third, ushort type, int code_length, int line) : base(code_length, line)
         {
             Second = second;
             Third = third;
@@ -31,7 +31,7 @@ namespace Complier.Structures.Instructions
                     return new Byte[]
                     {
                        0x45,
-                       Third.InnerToken.NumberTokenToBytes()[0],
+                       Third.InnerToken.GetDirectByte(),
                     };
 
 
@@ -44,20 +44,20 @@ namespace Complier.Structures.Instructions
                     return new Byte[]
                     {
                        0x44,
-                       Third.InnerToken.NumberTokenToBytes()[0],
+                       Third.InnerToken.GetDataByte(),
                     };
                 case 4:
                     return new Byte[]
                     {
                        0x42,
-                       Second.InnerToken.NumberTokenToBytes()[0],
+                       Second.InnerToken.GetDirectByte(),
                     };
                 default:
                     return new Byte[]
                     {
                        0x43,
-                       Second.InnerToken.NumberTokenToBytes()[0],
-                       Third.InnerToken.NumberTokenToBytes()[0],
+                       Second.InnerToken.GetDirectByte(),
+                       Third.InnerToken.GetDataByte()
                     };
             }
         }

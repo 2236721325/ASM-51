@@ -161,9 +161,41 @@ namespace Complier.CodeAnalyzer
             var token = NextToken();
             if (token.Kind != kind)
             {
-                throw new SyntaxException($"Unexpected Token kind {token.Kind}! We need Token {token.Kind}", Line);
+                throw new SyntaxException($"Unexpected Token kind {token.Kind}! We need Token {kind}", Line);
             }
             return token;
+        }
+
+
+        public Token NextTokenOfRi()
+        {
+            var token = NextToken();
+            if (!token.IsReg_Ri())
+            {
+                throw ThrowHelper.UnexpectedToken(token, "We need Ri");
+            }
+            return token;
+
+        }
+        public Token NextTokenOfRn()
+        {
+            var token = NextToken();
+            if (!token.IsReg_Rn())
+            {
+                throw ThrowHelper.UnexpectedToken(token, "We need Rn");
+            }
+            return token;
+
+        }
+        public Token NextTokenOfNumberOrSymbol()
+        {
+            var token = NextToken();
+            if (!token.IsNumberOrSymbol())
+            {
+                throw ThrowHelper.UnexpectedToken(token, "We need Number of Symbol");
+            }
+            return token;
+
         }
         public Token NextIdentifier()
         {

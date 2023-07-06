@@ -246,6 +246,41 @@ END
         }
 
 
+
+        [Fact]
+        public void Test_Symbol()
+        {
+            var code = @"
+ORG 0000h
+
+mov DPTR , #m_data
+
+mov A,P1
+
+
+
+m_data:
+    db 1,2
+
+END
+
+";
+            var lexer = new Lexer(code, SymbolTableFactory.CreateDefaultTable());
+
+            Parser parser = new Parser(lexer);
+
+            var block=parser.ParseBlock();
+
+            foreach (var item in block.Instructions)
+            {
+                Output.WriteLine($"[ {item.Address.ToString("X4")} ]  " + item.Instruction.ToString());
+            }
+
+
+          
+
+        }
+
     }
 }
 

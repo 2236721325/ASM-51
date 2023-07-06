@@ -12,9 +12,9 @@ namespace Complier.Structures.Instructions
 
         public ushort Type { get; set; }
 
-        public XCH_Instruction(Token second, PrefixStructure third, ushort type, int line) : base(line)
+        public XCH_Instruction(Token second, PrefixStructure third, ushort type, int code_length, int line) : base(code_length, line)
         {
-            Second = second;
+            Second = second;    
             Third = third;
             Type = type;
         }
@@ -36,7 +36,7 @@ namespace Complier.Structures.Instructions
                     return new byte[]
                     {
                         0xC5,
-                        Third.InnerToken.NumberTokenToBytes()[0],
+                        Third.InnerToken.GetDirectByte()
                     };
              
                 default:

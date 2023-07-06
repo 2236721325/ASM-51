@@ -2,7 +2,7 @@
 {
     public class End_Directive : Directive
     {
-        public End_Directive(int line) : base(line)
+        public End_Directive(int line) : base(0, line)
         {
         }
         public override string ToString()

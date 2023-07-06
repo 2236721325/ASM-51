@@ -6,7 +6,7 @@ namespace Complier.Structures.Directives
     {
         public Token NameToken { get; set; }
         public Token ValueToken { get; set; }
-        public EQU_Directive(Token name_token,Token value_token, int line) : base(line)
+        public EQU_Directive(Token name_token,Token value_token, int line) : base(0,line)
         {
             NameToken = name_token;
             ValueToken = value_token;

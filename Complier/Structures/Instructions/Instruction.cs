@@ -7,9 +7,10 @@ namespace Complier.Structures.Instructions
     {
         public int Line { get; set; }
 
-        public Instruction(int line)
+        public Instruction(int code_length,int line)
         {
             Line = line;
+            HexCodeLength = code_length;
         }
         /// <summary>
         /// will return null;
@@ -19,6 +20,10 @@ namespace Complier.Structures.Instructions
         {
             return null;
         }
+
+        public int HexCodeLength { get; set; }
+
+
 
         public override string ToString()
         {

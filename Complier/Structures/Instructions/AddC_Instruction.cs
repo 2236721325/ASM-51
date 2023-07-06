@@ -5,13 +5,13 @@ using System;
 
 namespace Complier.Structures.Instructions
 {
-    public class AddC_Instruction : Instruction
+    public class ADDC_Instruction : Instruction
     {
 
         public PrefixStructure Second { get; set; }
 
         public ushort Type;
-        public AddC_Instruction(PrefixStructure second, ushort type, int line) : base(line)
+        public ADDC_Instruction(PrefixStructure second, ushort type, int code_length,int line) : base(code_length, line)
         {
             Second = second;
             Type = type;
@@ -24,27 +24,19 @@ namespace Complier.Structures.Instructions
                 case 0:
                     return new Byte[]
                     {
-                        (Byte)(0x38 + TokenKindUtility.GetReg_Rn_index(Second.InnerToken.Kind))
+                        (Byte)(0x38 + Second.InnerToken.GetReg_Rn_index())
                     };
-
                 case 1:
-                    var direct = ByteHelper.NumberTokenToBytes(Second.InnerToken);
-                    if (direct.Length != 1)
-                    {
-                        throw new SyntaxException("The direct is must 1 byte -> ADD A,direct ", Second.InnerToken.Line);
-                    }
-                    return new byte[] { 0x35, direct[0] };
-
+                    var direct = Second.InnerToken.GetDirectByte();
+                    return new byte[] { 0x35, direct };
                 case 2:
-
-                    return new byte[] { (byte)(0x36 + TokenKindUtility.GetReg_Rn_index(Second.InnerToken.Kind)) };
-                default:
-                    direct = ByteHelper.NumberTokenToBytes(Second.InnerToken);
-                    if (direct.Length != 1)
+                    return new Byte[]
                     {
-                        throw new SyntaxException("The direct is must 1 byte -> ADD A,#data ", Second.InnerToken.Line);
-                    }
-                    return new byte[] { 0x34, direct[0] };
+                        (Byte)(0x36 + Second.InnerToken.GetReg_Rn_index())
+                    };
+                default:
+                    var data = Second.InnerToken.GetDataByte();
+                    return new byte[] { 0x34, data };
             }
         }
 

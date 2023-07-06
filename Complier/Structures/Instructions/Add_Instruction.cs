@@ -1,6 +1,7 @@
 ﻿using Complier.CodeAnalyzer;
 using Complier.Exceptions;
 using Complier.Helpers;
+using Complier.Symbols;
 using System;
 
 namespace Complier.Structures.Instructions
@@ -11,13 +12,13 @@ namespace Complier.Structures.Instructions
     /// Add A,@Ri                   2
     /// Add A,#data                 3
     /// </summary>
-    public class Add_Instruction : Instruction
+    public class ADD_Instruction : Instruction
     {
 
         public PrefixStructure Second { get; set; }
 
         public ushort Type; 
-        public Add_Instruction(PrefixStructure second, ushort type,int line) : base(line)
+        public ADD_Instruction(PrefixStructure second, ushort type, int code_length, int line) : base(code_length,line)
         {
             Second = second;
             Type = type;
@@ -28,29 +29,22 @@ namespace Complier.Structures.Instructions
             switch (Type)
             {
                 case 0:
-                    return new Byte[] 
-                    { 
-                        (Byte)(0x28 + TokenKindUtility.GetReg_Rn_index(Second.InnerToken.Kind)) 
+                    return new Byte[]
+                    {
+                        (Byte)(0x28 + Second.InnerToken.GetReg_Rn_index())
                     };
-
                 case 1:
-                    var direct = ByteHelper.NumberTokenToBytes(Second.InnerToken);
-                    if(direct.Length != 1)
-                    {
-                        throw new SyntaxException("The direct is must 1 byte -> ADD A,direct ",Second.InnerToken.Line);
-                    }
-                    return new byte[] { 0x25, direct[0] };
 
+                    var direct = Second.InnerToken.GetDirectByte();
+                    return new byte[] { 0x25, direct };
                 case 2:
-                    
-                    return new byte[] { (byte)( 0x26 + TokenKindUtility.GetReg_Rn_index(Second.InnerToken.Kind)) };
-                default:
-                    direct = ByteHelper.NumberTokenToBytes(Second.InnerToken);
-                    if (direct.Length != 1)
+                    return new Byte[]
                     {
-                        throw new SyntaxException("The direct is must 1 byte -> ADD A,#data ", Second.InnerToken.Line);
-                    }
-                    return new byte[] { 0x24, direct[0] };
+                        (Byte)(0x26 + Second.InnerToken.GetReg_Rn_index())
+                    };
+                default:
+                    var data = Second.InnerToken.GetDataByte();
+                    return new byte[] { 0x24, data};
             }
         }
 

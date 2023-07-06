@@ -10,7 +10,7 @@ namespace Complier.Structures.Instructions
         public PrefixStructure Second { get; set; }
 
         public ushort Type;
-        public INC_Instruction(PrefixStructure second, ushort type, int line) : base(line)
+        public INC_Instruction(PrefixStructure second, ushort type, int code_length, int line) : base(code_length, line)
         {
             Second = second;
             Type = type;
@@ -28,17 +28,17 @@ namespace Complier.Structures.Instructions
 
                 case 1:
 
-                    return new byte[] { (byte)(0x08 + TokenKindUtility.GetReg_Rn_index(Second.InnerToken.Kind)) };
+                    return new byte[] { (byte)(0x08 + Second.InnerToken.GetReg_Rn_index()) };
 
                 case 2:
-                    var direct = ByteHelper.NumberTokenToBytes(Second.InnerToken);
+                    var direct = Second.InnerToken.GetDirectByte();
                     return new Byte[]
                     {
                         0x05,
-                        direct[0]
+                        direct
                     };
                 case 3:
-                    return new byte[] { (byte)(0x06 + TokenKindUtility.GetReg_Rn_index(Second.InnerToken.Kind)) };
+                    return new byte[] { (byte)(0x06 + Second.InnerToken.GetReg_Rn_index()) };
                 default:
                     return new byte[] { 0xA3};
             }

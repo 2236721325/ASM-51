@@ -5,7 +5,7 @@ namespace Complier.Structures.Instructions
 {
     public class DA_Instruction : Instruction
     {
-        public DA_Instruction(int line) : base(line)
+        public DA_Instruction(int line) : base(1, line)
         {
         }
         public override Byte[] GetHexCode()

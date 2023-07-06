@@ -11,7 +11,7 @@ namespace Complier.Structures.Instructions
 
         public PrefixStructure Third { get; set; }
         public ushort Type;
-        public MOVC_Instruction(Token second, PrefixStructure third, ushort type, int line) : base(line)
+        public MOVC_Instruction(Token second, PrefixStructure third, ushort type, int line) : base(1, line)
         {
             Second = second;
             Third = third;

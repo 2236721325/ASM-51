@@ -27,7 +27,7 @@ add a,R1
 add a,r7
 add a,@r0
 END";
-            var lexer = new Lexer(code,new Default_SymbolTable());
+            var lexer = new Lexer(code,SymbolTableFactory.CreateDefaultTable());
             try
             {
                 while (true)

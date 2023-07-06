@@ -1,5 +1,6 @@
 ﻿using Complier.CodeAnalyzer;
 using Complier.Exceptions;
+using System;
 using System.Collections.Generic;
 using System.Xml.Linq;
 
@@ -29,7 +30,37 @@ namespace Complier.Symbols
         {
             return Symbols.Find(e=>e.Name== name);
         }
+        public Symbol FindSymbol(Token token)
+        {
+            var ret = FindSymbol(token.Value);
+            if(ret==null)
+            {
+                throw ThrowHelper.UnexpectedToken(token);
+            }
+            return ret;
+        }
 
+        public Symbol FindSymbolOfKind(Token token,SymbolType type)
+        {
+            Symbol symbol = FindSymbol(token.Value);
+            if(symbol.Type!=type)
+            {
+                throw ThrowHelper.UnexpectedToken(token);
+            }
+            return symbol;
+        }
+
+
+        public Symbol FindSymbolOfKind(Token token,Predicate<SymbolType> predicate)
+        {
+            Symbol symbol = FindSymbol(token.Value);
+            if (symbol == null) throw ThrowHelper.UnexpectedToken(token, "UnNamed Symbol!");
+            if (!predicate(symbol.Type))
+            {
+                throw ThrowHelper.UnexpectedToken(token);
+            }
+            return symbol;
+        }
         public bool Contains(string name)
         {
             return Symbols.Exists(e => e.Name == name);
