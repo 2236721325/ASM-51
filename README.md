@@ -30,30 +30,28 @@
 	   POP
 	   XCH
 	   XCHD
+    	CLR
+    	SETB
+    	CPL
+    	ANL
+    	ORL
+    	MOV
+    	//控制转移指令
+        ACALL
+    	LCALL
+    	RET
+    	RETI
+    	AJMP
+    	SJMP
+    	LJMP
+    	JMP
+    	JZ
+    	JNZ
+    	JC
+    	JNC
 	ToDO:
-		1.允许指令和 Symbol 配合使用
 		2.更加灵活的宏
 		3.完成剩余指令
-			//bit 
-			CLR
-			SETB
-			CPL
-			ANL
-			ORL
-			MOV
-			//控制转移指令
-		    ACALL
-			LCALL
-			RET
-			RETI
-			AJMP
-			SJMP
-			LJMP
-			JMP
-			JZ
-			JNZ
-			JC
-			JNC
 			JB
 			JNB
 			JBC
