@@ -294,8 +294,9 @@ entry:
     ACALL first
     ACALL init_second
     ACALL second
-my_loop:	
-    AJMP my_loop 
+    AJMP entry
+
+
 first:
     MOV R0,#01h
     MOV R1,#02h
@@ -318,10 +319,13 @@ init_second:
     MOV R1,0
     _loop_init:
         MOV A,R0
-		MOVX @DPTR,A
+        MOVX @DPTR,A
+
+
         INC R0
         INC R1
         INC DPTR
+        CJNE R1, #11h, _loop_init
     RET
 
 
@@ -333,13 +337,13 @@ second:
         MOV @R0,A
         INC R0
         INC DPTR
+        CJNE R0, #71h, _loop
     RET
 
 
 
 
 END
-
 ";
             var lexer = new Lexer(code, SymbolTableFactory.CreateDefaultTable());
 

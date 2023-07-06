@@ -103,8 +103,7 @@ namespace Complier.Structures.Instructions
                 case 12:
                     return new Byte[]
                      {
-                            0xF6,
-                            0xF7,
+                        (byte)(0xF6+Second.InnerToken.GetReg_Rn_index()),
                      };
                 case 13:
                     return new Byte[]
@@ -131,12 +130,25 @@ namespace Complier.Structures.Instructions
                     return new Byte[]
                     {
                             0xA2,
+                            Third.InnerToken.GetBitByte()
+                    };
+                case 17:
+                    return new Byte[]
+                    {
+                            0xA2,
+                            Third.InnerToken.GetBitByte(bit_offset,true)
+                    };
+
+                case 18:
+                    return new Byte[]
+                    {
+                            0x92,
                             Second.InnerToken.GetBitByte()
                     };
                 default:
                     return new Byte[]
                     {
-                            0xA2,
+                            0x92,
                             Second.InnerToken.GetBitByte(bit_offset,true)
                     };
             }

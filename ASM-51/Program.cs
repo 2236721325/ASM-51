@@ -1,4 +1,7 @@
 ﻿using Complier.CodeAnalyzer;
+using Complier.CodeAnalyzer.Parser;
+using Complier.CodeGenerate;
+using Complier.Symbols;
 using System.Text.Json;
 
 namespace ASM_51
@@ -7,53 +10,39 @@ namespace ASM_51
     {
         static void Main(string[] args)
         {
-
-            var code = @"
-ORG 0000h
-AJMP main
-ORG 0003h
-AJMP int0_interrupt
-ORG 0010h
-main:
-    MOV A,#11111111b
-    MOV P1,A
-interrupt_init:
-    SETB EA
-    SETB EX0
-    SETB IT0
-wait:
-    AJMP wait
-int0_interrupt:
-    MOV A, P1
-    CPL A
-    MOV P1, A
-    RETI
-END";
-                var lexer = new Lexer(code);
-
-
-            try
-            {
-                while (true)
+			try
+			{
+                if(args.Length >0)
                 {
-                    var token = lexer.NextToken();
+                    var file_name= args[0];
+                    string entryLocation = Environment.CurrentDirectory;
+                    Console.WriteLine("Entry Location: " + entryLocation);
 
-                    var str = JsonSerializer.Serialize(token);
-                    Console.WriteLine(str);
 
+                    var path=Path.Combine(entryLocation, file_name);
+                    var code = File.ReadAllText(path);
+                    var lexer = new Lexer(code, SymbolTableFactory.CreateDefaultTable());
 
-                    if (token.Kind == TokenKind.EOF)
+                    Parser parser = new Parser(lexer);
+
+                    var block = parser.ParseBlock();
+
+                    foreach (var item in block.Instructions)
                     {
-                        break;
+                        Console.WriteLine($"[ {item.Address.ToString("X4")} ]  " + item.Instruction.ToString());
                     }
-                }
-            }
-            catch (Exception ex)
-            {
 
+                    var code_create = new CodeGenerator(block);
+
+                    var target_path=Path.Combine(entryLocation, file_name+".hex");
+                    code_create.CreateHexFile(target_path);
+                }
+			}
+			catch (Exception ex)
+			{
                 Console.WriteLine(ex.Message);
             }
-               
         }
+      
     }
 }

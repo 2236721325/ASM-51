@@ -1,6 +1,7 @@
 ﻿using Complier.CodeAnalyzer;
 using Complier.Helpers;
 using System;
+using System.ComponentModel;
 
 namespace Complier.Structures.Instructions
 {
@@ -30,7 +31,5 @@ namespace Complier.Structures.Instructions
             return "{JZ_Instruction:{" + $"HexCode={GetHexCode().GetString()} ,Line={Line}" + "} }";
         }
     }
-
-
 
 }

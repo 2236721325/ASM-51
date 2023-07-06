@@ -1,11 +1,19 @@
 # ASM-51
 
+## 使用
+	 下载  Release 
+	解压后 找到 ASM-51
+	这是一个命令行工具 可添加环境变量中使用
+	目前只有一条命令 
+	ASM-51 [file_name]
+	会生成 .hex 文件
+	
 ## 说明
 	因为以后可能想写个虚拟机 所以有些的代码对于纯粹的 汇编->机器码 这个过程是无用的 对于编写虚拟机是有用的。 
-## 目前进度 70%
+## 目前进度 95%
 	已完成：
 	支持伪指令 EQU, ORG, DB, END  
-	支持指令  
+	支持所有指令  
 	   ADD
 	   ADDC
 	   SUBB
@@ -30,37 +38,40 @@
 	   POP
 	   XCH
 	   XCHD
-    	CLR
-    	SETB
-    	CPL
-    	ANL
-    	ORL
-    	MOV
-    	//控制转移指令
-        ACALL
-    	LCALL
-    	RET
-    	RETI
-    	AJMP
-    	SJMP
-    	LJMP
-    	JMP
-    	JZ
-    	JNZ
-    	JC
-    	JNC
-	ToDO:
-		2.更加灵活的宏
-		3.完成剩余指令
-			JB
-			JNB
-			JBC
-			CJNE
-			DJNZ
-			NOP
-		4.生成.hex 格式文件 可直接烧录到单片机
+		CLR
+		SETB
+		CPL
+		ANL
+		ORL
+		MOV
+		//控制转移指令
+		   ACALL
+		LCALL
+		RET
+		RETI
+		AJMP
+		SJMP
+		LJMP
+		JMP
+		JZ
+		JNZ
+		JC
+		JNC
+		JB
+		JNB
+		JBC
+		CJNE
+		DJNZ
+		NOP
+
+
+## TODO
+		1. 生成 .omf，bin 格式文件
+		2.一个虚拟机，用于调试
+		3.更多的伪指令
+		4.更加灵活的宏定义
 		5.更多的测试 自动化测试 而不是现在的靠我肉眼对比观察生成的指令
 		6.一些地方的重构（算了吧）
 		7.开摆
-		
+	
 
