@@ -38,31 +38,31 @@
 	   POP
 	   XCH
 	   XCHD
-		CLR
-		SETB
-		CPL
-		ANL
-		ORL
-		MOV
-		//控制转移指令
-		   ACALL
-		LCALL
-		RET
-		RETI
-		AJMP
-		SJMP
-		LJMP
-		JMP
-		JZ
-		JNZ
-		JC
-		JNC
-		JB
-		JNB
-		JBC
-		CJNE
-		DJNZ
-		NOP
+	   CLR
+	   SETB
+	   CPL
+	   ANL
+	   ORL
+	   MOV
+	   //控制转移指令
+	   ACALL
+	   LCALL
+	   RET
+	   RETI
+	   AJMP
+	   SJMP
+	   LJMP
+	   JMP
+	   JZ
+	   JNZ
+	   JC
+	   JNC
+	   JB
+	   JNB
+	   JBC
+	   CJNE
+	   DJNZ
+	   NOP
 
 
 ## TODO
