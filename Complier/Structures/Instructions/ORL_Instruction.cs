@@ -10,11 +10,14 @@ namespace Complier.Structures.Instructions
 
         public PrefixStructure Third { get; set; }
         public ushort Type;
-        public ORL_Instruction(PrefixStructure second, PrefixStructure third, ushort type, int code_length, int line) : base(code_length, line)
+
+        private int bit_offset= 0;
+        public ORL_Instruction(PrefixStructure second, PrefixStructure third, ushort type, int code_length, int line, int bit_offset=0) : base(code_length, line)
         {
             Second = second;
             Third = third;
             Type = type;
+            this.bit_offset = bit_offset;
         }
 
         public override Byte[] GetHexCode()
@@ -52,12 +55,36 @@ namespace Complier.Structures.Instructions
                        0x42,
                        Second.InnerToken.GetDirectByte(),
                     };
-                default:
+                case 5:
                     return new Byte[]
                     {
                        0x43,
                        Second.InnerToken.GetDirectByte(),
                        Third.InnerToken.GetDataByte()
+                    };
+                case 6:
+                    return new Byte[]
+                    {
+                       0x72,
+                       Third.InnerToken.GetBitByte()
+                    };
+                case 7:
+                    return new Byte[]
+                    {
+                      0x72,
+                      Third.InnerToken.GetBitByte(bit_offset,true)
+                    };
+                case 8:
+                    return new Byte[]
+                    {
+                       0xA0,
+                       Third.InnerToken.GetBitByte()
+                    };
+                default:
+                    return new Byte[]
+                    {
+                       0xA0,
+                       Third.InnerToken.GetBitByte(bit_offset,true)
                     };
             }
         }

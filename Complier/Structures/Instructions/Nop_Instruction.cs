@@ -3,7 +3,7 @@ using System;
 
 namespace Complier.Structures.Instructions
 {
-    public class Nop_Instruction : Instruction
+    public partial class Nop_Instruction : Instruction
     {
         public Nop_Instruction(int line) : base(1, line)
         {
@@ -16,6 +16,7 @@ namespace Complier.Structures.Instructions
         {
             return "{Nop_Instruction:{" + $"HexCode={GetHexCode().GetString()} ,Line={Line}" + "} }";
         }
+
     }
 
 

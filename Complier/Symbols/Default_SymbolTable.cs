@@ -15,27 +15,27 @@ namespace Complier.Symbols
         private void InitTable()
         {
             Symbols = new List<Symbol>();
-            AddNewSymbol("P0", 0x80, SymbolType.DATA);
+            AddNewSymbol("P0", 0x80, SymbolType.DATA,true);
             AddNewSymbol("SP", 0x81, SymbolType.DATA);
             AddNewSymbol("DPL", 0x82, SymbolType.DATA);
             AddNewSymbol("DPH", 0x83, SymbolType.DATA);
             AddNewSymbol("PCON", 0x87, SymbolType.DATA);
-            AddNewSymbol("TCON", 0x88, SymbolType.DATA);
+            AddNewSymbol("TCON", 0x88, SymbolType.DATA,true);
             AddNewSymbol("TMOD", 0x89, SymbolType.DATA);
             AddNewSymbol("TL0", 0x8a, SymbolType.DATA);
             AddNewSymbol("TL1", 0x8b, SymbolType.DATA);
             AddNewSymbol("TH0", 0x8c, SymbolType.DATA);
             AddNewSymbol("TH1", 0x8d, SymbolType.DATA);
-            AddNewSymbol("P1", 0x90, SymbolType.DATA);
+            AddNewSymbol("P1", 0x90, SymbolType.DATA, true);
             AddNewSymbol("SCON", 0x98, SymbolType.DATA);
             AddNewSymbol("SBUF", 0x99, SymbolType.DATA);
             AddNewSymbol("P2", 0xa0, SymbolType.DATA);
-            AddNewSymbol("IE", 0xa8, SymbolType.DATA);
-            AddNewSymbol("P3", 0xb0, SymbolType.DATA);
-            AddNewSymbol("IP", 0xb8, SymbolType.DATA);
-            AddNewSymbol("PSW", 0xd0, SymbolType.DATA);
-            AddNewSymbol("ACC", 0xe0, SymbolType.DATA);
-            AddNewSymbol("B", 0xf0, SymbolType.DATA);
+            AddNewSymbol("IE", 0xa8, SymbolType.DATA, true);
+            AddNewSymbol("P3", 0xb0, SymbolType.DATA, true);
+            AddNewSymbol("IP", 0xb8, SymbolType.DATA, true);
+            AddNewSymbol("PSW", 0xd0, SymbolType.DATA, true);
+            AddNewSymbol("ACC", 0xe0, SymbolType.DATA, true);
+            AddNewSymbol("B", 0xf0, SymbolType.DATA, true);
             AddNewSymbol("IT0", 0x88 + 0, SymbolType.BIT);
             AddNewSymbol("IE0", 0x88 + 1, SymbolType.BIT);
             AddNewSymbol("IT1", 0x88 + 2, SymbolType.BIT);

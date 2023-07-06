@@ -9,10 +9,10 @@ namespace SimpleTest
     {
         static void Main(string[] args)
         {
-            int num = int.Parse("01f2f", System.Globalization.NumberStyles.AllowHexSpecifier);
-            var bytes = ByteHelper.Zip(BitConverter.GetBytes(num));
-
-            Console.WriteLine(bytes.GetString());
+            var byte1 = 0x00;
+            var byte2 = 0x02;
+            var result = (byte)(byte1 - byte2);
+            Console.WriteLine(result.ToString("X2"));
 
         }
     }

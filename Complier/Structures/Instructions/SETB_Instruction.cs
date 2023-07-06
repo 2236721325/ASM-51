@@ -4,13 +4,13 @@ using System;
 
 namespace Complier.Structures.Instructions
 {
-    public class CLR_Instruction : Instruction
+    public class SETB_Instruction : Instruction
     {
         public ushort Type { get; set; }
         public Token EndToken { get; set; }
 
         private int bit_offset = 0;
-        public CLR_Instruction(Token end_token, ushort type,int code_length, int line, int bit_offset=0) : base(code_length, line)
+        public SETB_Instruction(Token end_token, ushort type, int code_length, int line, int bit_offset = 0) : base(code_length, line)
         {
             Type = type;
             EndToken = end_token;
@@ -21,20 +21,18 @@ namespace Complier.Structures.Instructions
             switch (Type)
             {
                 case 0:
-                    return new byte[] { 0xE4 };
+                    return new byte[] { 0xD3 };
 
                 case 1:
-                    return new byte[] { 0xC3 };
-                case 2:
                     return new byte[]
                     {
-                        0xC2,
-                        EndToken.GetBitByte(0,false)
+                        0xD2,
+                        EndToken.GetBitByte(),
                     };
                 default:
                     return new byte[]
                     {
-                        0xC2,
+                        0xD2,
                         EndToken.GetBitByte(bit_offset,true)
                     };
 

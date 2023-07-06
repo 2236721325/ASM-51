@@ -9,16 +9,16 @@ namespace Complier.Symbols
     public abstract class SymbolTable
     {
         public List<Symbol> Symbols { get; set; }
-        public void AddNewSymbol(string name, int value, SymbolType type)
+        public void AddNewSymbol(string name, int value, SymbolType type,bool can_dot_bit=false)
         {
-            Symbols.Add(new Symbol(name, value, type));
+            Symbols.Add(new Symbol(name, value, type,can_dot_bit));
         }
 
-        public void AddNewSymbol(Token token,int value,SymbolType type)
+        public void AddNewSymbol(Token token,int value,SymbolType type,bool can_dot_bit=false)
         {
             IfContainThrow(token.Value, token.Line);
 
-            Symbols.Add(new Symbol(token.Value, value, type));
+            Symbols.Add(new Symbol(token.Value, value, type,can_dot_bit));
         }
 
         public void AddNewSymbol(Token name_token, Token value_token, SymbolType type)
@@ -51,16 +51,17 @@ namespace Complier.Symbols
         }
 
 
-        public Symbol FindSymbolOfKind(Token token,Predicate<SymbolType> predicate)
+        public Symbol FindSymbolOfKind(Token token,Predicate<Symbol> predicate)
         {
             Symbol symbol = FindSymbol(token.Value);
             if (symbol == null) throw ThrowHelper.UnexpectedToken(token, "UnNamed Symbol!");
-            if (!predicate(symbol.Type))
+            if (!predicate(symbol))
             {
                 throw ThrowHelper.UnexpectedToken(token);
             }
             return symbol;
         }
+
         public bool Contains(string name)
         {
             return Symbols.Exists(e => e.Name == name);

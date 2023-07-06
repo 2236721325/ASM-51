@@ -11,11 +11,13 @@ namespace Complier.Structures.Instructions
 
         public PrefixStructure Third { get; set; }
         public ushort Type;
-        public MOV_Instruction(PrefixStructure second, PrefixStructure third, ushort type, int code_length, int line) : base(code_length, line)
+        private int bit_offset = 0;
+        public MOV_Instruction(PrefixStructure second, PrefixStructure third, ushort type, int code_length, int line,int bit_offset=0) : base(code_length, line)
         {
             Second = second;
             Third = third;
             Type = type;
+            this.bit_offset = 0;
         }
 
         public override Byte[] GetHexCode()
@@ -117,15 +119,26 @@ namespace Complier.Structures.Instructions
                             0x76,
                             0x77,
                             Third.InnerToken.GetDataByte()
-
                      };
-                default:
+                case 15:
                     var bytes = new List<Byte>
                     {
                         0x90
                     };
                     bytes.AddRange(Third.InnerToken.GetData16Byte());
                     return bytes.ToArray();
+                case 16:
+                    return new Byte[]
+                    {
+                            0xA2,
+                            Second.InnerToken.GetBitByte()
+                    };
+                default:
+                    return new Byte[]
+                    {
+                            0xA2,
+                            Second.InnerToken.GetBitByte(bit_offset,true)
+                    };
             }
         }
 

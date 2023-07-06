@@ -3,6 +3,7 @@ using Complier.Helpers;
 using Complier.Structures;
 using Complier.Symbols;
 using System;
+using System.Linq;
 
 namespace Complier.CodeAnalyzer
 {
@@ -35,8 +36,7 @@ namespace Complier.CodeAnalyzer
 
         public bool IsReg_Rn()
         {
-            var num = (int)this.Kind;
-            return num >= 48 && num <= 55;
+            return this.Kind>=TokenKind.REG_R0 && this.Kind<=TokenKind.REG_R7;
         }
         public bool IsReg_Ri()
         {
@@ -51,7 +51,7 @@ namespace Complier.CodeAnalyzer
 
         public  Byte GetReg_Rn_index()
         {
-            return (byte)((int)this.Kind - 48);
+            return (byte) (this.Kind-TokenKind.REG_R0);
         }
 
 
@@ -72,11 +72,23 @@ namespace Complier.CodeAnalyzer
                 throw ThrowHelper.UnexpectedToken(this);
             }
             var bytes= ByteHelper.NumberTokenToBytes(this);
-            if(bytes.Length!=count)
+
+            if (bytes.Length > count)
             {
                 throw ThrowHelper.UnexpectedToken(this, $"this token must {count} byte length!");
             }
-            return bytes;
+            var list = bytes.ToList();
+
+            if (bytes.Length < count)
+            {
+                for (int i = 0; i < count - bytes.Length; i++)
+                {
+                    list.Insert(0, 0x00);
+                }
+            }
+
+            return list.ToArray();
+         
         }
 
         public Byte[] NumberOrSymbolTokenToBytes(int count=1)
@@ -115,6 +127,30 @@ namespace Complier.CodeAnalyzer
         public Byte[] GetData16Byte()
         {
             return ByteHelper.GetData16Byte(this);
+        }
+
+        public Byte[] GetAddress16Byte()
+        {
+            return ByteHelper.GetAdrress16Byte(this);
+        }
+
+        public Byte[] Get_ACALL_Address11Bytes()
+        {
+            return ByteHelper.Get_ACALL_Address11Bytes(this);
+        }
+
+        public Byte[] Get_AJMP_Address11Bytes()
+        {
+            return ByteHelper.Get_AJMP_Address11Bytes(this);
+        }
+
+        public Byte GetRelByte(int current_address)
+        {
+            return ByteHelper.GetRelByte(this, current_address);
+        }
+        public Byte GetBitByte(int offset=0,bool has_dot_bit=false)
+        {
+            return ByteHelper.GetBitByte(this, offset, has_dot_bit);
         }
 
         public override string ToString()

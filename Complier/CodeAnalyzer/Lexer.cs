@@ -50,6 +50,9 @@ namespace Complier.CodeAnalyzer
                 case ',':
                     Next(1);
                     return new Token(TokenKind.TOKEN_SEP_COMMA, ",", Line);
+                case '/':
+                    Next(1);
+                    return new Token(TokenKind.TOKEN_SEP_SLASH, "/", Line);
                 case ':':
                     Next(1);
                     return new Token(TokenKind.TOKEN_SEP_COLON, ":", Line);
@@ -185,6 +188,30 @@ namespace Complier.CodeAnalyzer
                 throw ThrowHelper.UnexpectedToken(token, "We need Rn");
             }
             return token;
+
+        }
+
+        public Token NextBitToken()
+        {
+            var token= NextToken();
+            if(token.Kind==TokenKind.Number&& token.Value.Length==1)
+            {
+                return token;
+            }
+            throw ThrowHelper.UnexpectedToken(token, "We need bit token!");
+        }
+        public int NextBitTokenOfValue()
+        {
+            var token = NextBitToken();
+            if(!int.TryParse(token.Value,out int result))
+            {
+                throw ThrowHelper.UnexpectedToken(token, "We need bit token!");
+            }
+            if(result>=0 && result<=7)
+            {
+                return result;
+            }
+            throw ThrowHelper.UnexpectedToken(token, "We need bit token 0-7!");
 
         }
         public Token NextTokenOfNumberOrSymbol()

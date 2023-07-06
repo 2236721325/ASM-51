@@ -1,6 +1,7 @@
 ﻿using Complier.Exceptions;
 using Complier.Structures;
 using Complier.Structures.Instructions;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.IO.MemoryMappedFiles;
@@ -105,24 +106,27 @@ namespace Complier.CodeAnalyzer.Parser
                     return ParseOp_RETI();
                 case TokenKind.OP_AJMP:
                     return ParseOp_AJMP();
-
+                
                 case TokenKind.OP_LJMP:
                     return ParseOp_LJMP();
 
                 case TokenKind.OP_SJMP:
                     return ParseOp_SJMP();
 
+                case TokenKind.OP_JMP:
+                    return ParseOp_JMP();
+
                 case TokenKind.OP_JZ:
                     return ParseOp_JZ();
 
                 case TokenKind.OP_JNZ:
-                    return ParseOp_NJZ();
+                    return ParseOp_JNZ();
 
                 case TokenKind.OP_JC:
                     return ParseOp_JC();
 
                 case TokenKind.OP_JNC:
-                    return ParseOp_NJC();
+                    return ParseOp_JNC();
 
                 case TokenKind.OP_JB:
                     return ParseOp_JB();
@@ -176,64 +180,98 @@ namespace Complier.CodeAnalyzer.Parser
             throw new NotImplementedException();
         }
 
-        private Instruction ParseOp_NJC()
+        private Instruction ParseOp_JNC()
         {
-            throw new NotImplementedException();
+            var rel_token = lexer.NextTokenOfNumberOrSymbol();
+            return new JNC_Instruction(CurrentAddress, rel_token, lexer.Line);
         }
 
         private Instruction ParseOp_JC()
         {
-            throw new NotImplementedException();
+            var rel_token = lexer.NextTokenOfNumberOrSymbol();
+            return new JC_Instruction(CurrentAddress, rel_token, lexer.Line);
         }
 
-        private Instruction ParseOp_NJZ()
+        private Instruction ParseOp_JNZ()
         {
-            throw new NotImplementedException();
+            var rel_token = lexer.NextTokenOfNumberOrSymbol();
+            return new JNZ_Instruction(CurrentAddress, rel_token, lexer.Line);
         }
 
         private Instruction ParseOp_JZ()
         {
-            throw new NotImplementedException();
+            var rel_token = lexer.NextTokenOfNumberOrSymbol();
+            return new JZ_Instruction(CurrentAddress, rel_token, lexer.Line);
+        }
+
+        private Instruction ParseOp_JMP()
+        {
+            lexer.NextTokenOfKind(TokenKind.TOKEN_SEP_ARE);
+            lexer.NextTokenOfKind(TokenKind.REG_A);
+            lexer.NextTokenOfKind(TokenKind.TOKEN_SEP_PLUS);
+            lexer.NextTokenOfKind(TokenKind.REG_DPTR);
+            return new JMP_Instruction(lexer.Line);
         }
 
         private Instruction ParseOp_SJMP()
         {
-            throw new NotImplementedException();
+            var rel_token = lexer.NextTokenOfNumberOrSymbol();
+            return new SJMP_Instruction(CurrentAddress,rel_token, lexer.Line);
         }
 
         private Instruction ParseOp_LJMP()
         {
-            throw new NotImplementedException();
+            var address16_token = lexer.NextTokenOfNumberOrSymbol();
+            return new LJMP_Instruction(address16_token, lexer.Line);
         }
 
         private Instruction ParseOp_AJMP()
         {
-            throw new NotImplementedException();
+            var address11_token = lexer.NextTokenOfNumberOrSymbol();
+            return new AJMP_Instruction(address11_token, lexer.Line);
         }
 
         private Instruction ParseOp_RETI()
         {
-            throw new NotImplementedException();
+            return new RETI_Instruction(lexer.Line);
         }
 
         private Instruction ParseOp_RET()
         {
-            throw new NotImplementedException();
+            return new RET_Instruction(lexer.Line);
         }
 
         private Instruction ParseOp_LCALL()
         {
-            throw new NotImplementedException();
+            var address16_token = lexer.NextTokenOfNumberOrSymbol();
+            return new LCALL_Instruction(address16_token, lexer.Line);
         }
 
         private Instruction ParseOp_ACALL()
         {
-            throw new NotImplementedException();
+            var address11_token=lexer.NextTokenOfNumberOrSymbol();
+            return new ACALL_Instruction(address11_token,lexer.Line);
         }
 
         private Instruction ParseOp_SETB()
         {
-            throw new NotImplementedException();
+            var token = lexer.NextToken();
+            if(token.Kind==TokenKind.REG_C)
+            {
+                return new SETB_Instruction(token, 0, 1, lexer.Line);
+            }
+            if(token.IsNumberOrSymbol())
+            {
+                if (lexer.LookAhead().Kind != TokenKind.TOKEN_SEP_DOT)
+                {
+                    return new SETB_Instruction(token, 1, 2, lexer.Line);
+                }
+                lexer.NextTokenOfKind(TokenKind.TOKEN_SEP_DOT);
+                var bit_offset = lexer.NextBitTokenOfValue();
+
+                return new SETB_Instruction(token, 2, 2, lexer.Line, bit_offset);
+            }
+            throw ThrowHelper.UnexpectedToken(token);
         }
 
 
@@ -682,6 +720,37 @@ namespace Complier.CodeAnalyzer.Parser
 
 
             }
+            if (second_token.Kind == TokenKind.REG_C)
+            {
+                lexer.NextTokenOfKind(TokenKind.TOKEN_SEP_COMMA);
+                var third_token = lexer.NextToken();
+                if (third_token.IsNumberOrSymbol())
+                {
+                    if (lexer.LookAhead().Kind != TokenKind.TOKEN_SEP_DOT)
+                    {
+                        return new MOV_Instruction(
+                                second_token.ToPrefixStructure(),
+                                third_token.ToPrefixStructure(),
+                                16,
+                                2,
+                                lexer.Line);
+                    }
+                    lexer.NextTokenOfKind(TokenKind.TOKEN_SEP_DOT);
+                    var bit_offset = lexer.NextBitTokenOfValue();
+
+                    return new MOV_Instruction(
+                                                  second_token.ToPrefixStructure(),
+                                                  third_token.ToPrefixStructure(),
+                                                  17,
+                                                  2,
+                                                  lexer.Line,
+                                                  bit_offset);
+                }
+
+
+                throw ThrowHelper.UnexpectedToken(third_token);
+
+            }
             throw ThrowHelper.UnexpectedToken(second_token);
         }
 
@@ -720,14 +789,52 @@ namespace Complier.CodeAnalyzer.Parser
 
         private Instruction ParseOp_CPL()
         {
-            lexer.NextTokenOfKind(TokenKind.REG_A);
-            return new CPL_Instruction(lexer.Line);
+            var token = lexer.NextToken();
+            if (token.Kind == TokenKind.REG_A)
+            {
+                return new CPL_Instruction(token, 0, 1, lexer.Line);
+            }
+            if (token.Kind == TokenKind.REG_C)
+            {
+                return new CPL_Instruction(token, 1, 1, lexer.Line);
+            }
+            if (token.IsNumberOrSymbol())
+            {
+                if (lexer.LookAhead().Kind != TokenKind.TOKEN_SEP_DOT)
+                {
+                    return new CPL_Instruction(token, 2, 2, lexer.Line);
+                }
+                lexer.NextTokenOfKind(TokenKind.TOKEN_SEP_DOT);
+                var bit_offset = lexer.NextBitTokenOfValue();
+
+                return new CPL_Instruction(token, 3, 2, lexer.Line, bit_offset);
+            }
+            throw ThrowHelper.UnexpectedToken(token);
         }
 
         private Instruction ParseOp_CLR()
         {
-            lexer.NextTokenOfKind(TokenKind.REG_A);
-            return new CLR_Instruction(lexer.Line);
+            var token = lexer.NextToken();
+            if(token.Kind==TokenKind.REG_A)
+            {
+                return new CLR_Instruction(token, 0, 1, lexer.Line);
+            }
+            if (token.Kind == TokenKind.REG_C)
+            {
+                return new CLR_Instruction(token, 1, 1, lexer.Line);
+            }
+            if(token.IsNumberOrSymbol())
+            {
+                if(lexer.LookAhead().Kind!=TokenKind.TOKEN_SEP_DOT)
+                {
+                    return new CLR_Instruction(token, 2, 2, lexer.Line);
+                }
+                lexer.NextTokenOfKind(TokenKind.TOKEN_SEP_DOT);
+                var bit_offset=lexer.NextBitTokenOfValue();
+
+                return new CLR_Instruction(token, 3, 2, lexer.Line,bit_offset);
+            }
+            throw ThrowHelper.UnexpectedToken(token);
         }
 
         private Instruction ParseOp_XRL()
@@ -924,6 +1031,62 @@ namespace Complier.CodeAnalyzer.Parser
                 throw ThrowHelper.UnexpectedToken(third_token);
 
             }
+
+            if (second_token.Kind == TokenKind.REG_C)
+            {
+                lexer.NextTokenOfKind(TokenKind.TOKEN_SEP_COMMA);
+                var third_token = lexer.NextToken();
+                if (third_token.IsNumberOrSymbol())
+                {
+                    if (lexer.LookAhead().Kind != TokenKind.TOKEN_SEP_DOT)
+                    {
+                        return new ORL_Instruction(
+                                second_token.ToPrefixStructure(),
+                                third_token.ToPrefixStructure(),
+                                6,
+                                2,
+                                lexer.Line);
+                    }
+                    lexer.NextTokenOfKind(TokenKind.TOKEN_SEP_DOT);
+                    var bit_offset = lexer.NextBitTokenOfValue();
+
+                    return new ORL_Instruction(
+                                                  second_token.ToPrefixStructure(),
+                                                  third_token.ToPrefixStructure(),
+                                                  7,
+                                                  2,
+                                                  lexer.Line,
+                                                  bit_offset);
+                }
+
+                if (third_token.Kind == TokenKind.TOKEN_SEP_SLASH)
+                {
+                    var symbol_token = lexer.NextTokenOfNumberOrSymbol();
+                    if (lexer.LookAhead().Kind != TokenKind.TOKEN_SEP_DOT)
+                    {
+                        return new ORL_Instruction(
+                                second_token.ToPrefixStructure(),
+                                symbol_token.ToPrefixStructure(third_token),
+                                8,
+                                2,
+                                lexer.Line);
+                    }
+                    lexer.NextTokenOfKind(TokenKind.TOKEN_SEP_DOT);
+                    var bit_offset = lexer.NextBitTokenOfValue();
+
+                    return new ORL_Instruction(
+                                                  second_token.ToPrefixStructure(),
+                                                  symbol_token.ToPrefixStructure(third_token),
+                                                  9,
+                                                  2,
+                                                  lexer.Line,
+                                                  bit_offset);
+                }
+
+                throw ThrowHelper.UnexpectedToken(third_token);
+
+            }
+
             throw ThrowHelper.UnexpectedToken(second_token);
         }
 
@@ -1020,7 +1183,63 @@ namespace Complier.CodeAnalyzer.Parser
                 throw ThrowHelper.UnexpectedToken(third_token);
 
             }
-             throw ThrowHelper.UnexpectedToken(second_token);
+
+
+            if(second_token.Kind==TokenKind.REG_C)
+            {
+                lexer.NextTokenOfKind(TokenKind.TOKEN_SEP_COMMA);
+                var third_token = lexer.NextToken();
+                if(third_token.IsNumberOrSymbol())
+                {
+                    if (lexer.LookAhead().Kind != TokenKind.TOKEN_SEP_DOT)
+                    {
+                        return new ANL_Instruction(
+                                second_token.ToPrefixStructure(),
+                                third_token.ToPrefixStructure(),
+                                6,
+                                2,
+                                lexer.Line);
+                    }
+                    lexer.NextTokenOfKind(TokenKind.TOKEN_SEP_DOT);
+                    var bit_offset = lexer.NextBitTokenOfValue();
+
+                    return new ANL_Instruction(
+                                                  second_token.ToPrefixStructure(),
+                                                  third_token.ToPrefixStructure(),
+                                                  7,
+                                                  2,
+                                                  lexer.Line,
+                                                  bit_offset);
+                }
+
+                if(third_token.Kind==TokenKind.TOKEN_SEP_SLASH)
+                {
+                    var symbol_token = lexer.NextTokenOfNumberOrSymbol();
+                    if (lexer.LookAhead().Kind != TokenKind.TOKEN_SEP_DOT)
+                    {
+                        return new ANL_Instruction(
+                                second_token.ToPrefixStructure(),
+                                symbol_token.ToPrefixStructure(third_token),
+                                8,
+                                2,
+                                lexer.Line);
+                    }
+                    lexer.NextTokenOfKind(TokenKind.TOKEN_SEP_DOT);
+                    var bit_offset = lexer.NextBitTokenOfValue();
+
+                    return new ANL_Instruction(
+                                                  second_token.ToPrefixStructure(),
+                                                  symbol_token.ToPrefixStructure(third_token),
+                                                  9,
+                                                  2,
+                                                  lexer.Line,
+                                                  bit_offset);
+                }
+
+                throw ThrowHelper.UnexpectedToken(third_token);
+
+            }
+            throw ThrowHelper.UnexpectedToken(second_token);
         }
 
         #endregion

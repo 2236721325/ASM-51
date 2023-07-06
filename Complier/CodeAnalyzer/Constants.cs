@@ -60,8 +60,11 @@ namespace Complier.CodeAnalyzer
         {
             {"A", TokenKind.REG_A},
             {"AB", TokenKind.REG_AB},
-            {"ACC",TokenKind.REG_ACC},
-            {"B", TokenKind. REG_B},
+            {"C", TokenKind.REG_C},
+            {"DPTR",TokenKind. REG_DPTR},
+            {"PC",TokenKind. REG_PC},
+
+
             {"R0",TokenKind. REG_R0},
             {"R1",TokenKind. REG_R1},
             {"R2",TokenKind. REG_R2},
@@ -70,8 +73,7 @@ namespace Complier.CodeAnalyzer
             {"R5",TokenKind. REG_R5},
             {"R6",TokenKind. REG_R6},
             {"R7",TokenKind. REG_R7},
-            {"DPTR",TokenKind. REG_DPTR},
-            {"PC",TokenKind. REG_PC},
+
 
         };
 

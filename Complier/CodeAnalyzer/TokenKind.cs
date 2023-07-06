@@ -75,8 +75,6 @@ namespace Complier.CodeAnalyzer
         OP_DJNZ,
         OP_NOP,
         REG_A,
-        REG_ACC,
-        REG_B,
         REG_R0,
         REG_R1,
         REG_R2,
@@ -88,6 +86,7 @@ namespace Complier.CodeAnalyzer
         REG_DPTR,
         REG_AB,
         REG_PC,
+        REG_C,
         TOKEN_SEP_COMMA,
         TOKEN_OP_LEN,
         TOKEN_SEP_DOT,
@@ -99,6 +98,8 @@ namespace Complier.CodeAnalyzer
         Directive_DB,
         Directive_EQU,
         TOKEN_SEP_ARE,
-        TOKEN_Symbol=Identifier
+        TOKEN_Symbol=Identifier,
+        TOKEN_SEP_SLASH = 69,
+        OP_JMP = 70
     }
 }
