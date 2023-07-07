@@ -34,6 +34,8 @@ namespace Complier.CodeAnalyzer
         }
 
 
+
+
         public bool IsReg_Rn()
         {
             return this.Kind>=TokenKind.REG_R0 && this.Kind<=TokenKind.REG_R7;

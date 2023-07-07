@@ -28,7 +28,7 @@ namespace Complier.Symbols
 
         public Symbol FindSymbol(string name)
         {
-            return Symbols.Find(e=>e.Name== name);
+            return Symbols.Find(e=>e.Name==name||e.Name==name.ToUpper());
         }
         public Symbol FindSymbol(Token token)
         {
@@ -64,7 +64,7 @@ namespace Complier.Symbols
 
         public bool Contains(string name)
         {
-            return Symbols.Exists(e => e.Name == name);
+            return Symbols.Exists(e => e.Name == name ||e.Name==name.ToUpper());
         }
 
         public void IfContainThrow(string name, int line)

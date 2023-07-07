@@ -35,7 +35,8 @@ namespace ASM_51
                     var code_create = new CodeGenerator(block);
 
                     var target_path=Path.Combine(entryLocation, file_name+".hex");
-                    code_create.CreateHexFile(target_path);
+                    var hex_file = code_create.CreateHexFile();
+                    hex_file.WriteToFile(target_path);
                 }
 			}
 			catch (Exception ex)

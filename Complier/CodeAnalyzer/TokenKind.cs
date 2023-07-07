@@ -98,8 +98,9 @@ namespace Complier.CodeAnalyzer
         Directive_DB,
         Directive_EQU,
         TOKEN_SEP_ARE,
-        TOKEN_Symbol=Identifier,
-        TOKEN_SEP_SLASH = 69,
-        OP_JMP = 70
+        TOKEN_SEP_SLASH,
+        OP_JMP,
+        TOKEN_SEP_DOLLAR,
+        TOKEN_Symbol = Identifier,
     }
 }

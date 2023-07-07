@@ -56,6 +56,10 @@ namespace Complier.CodeAnalyzer
                 case ':':
                     Next(1);
                     return new Token(TokenKind.TOKEN_SEP_COLON, ":", Line);
+
+                case '$':
+                    Next(1);
+                    return new Token(TokenKind.TOKEN_SEP_DOLLAR, "$", Line);
                 case '#':
                     Next(1);
                     return new Token(TokenKind.TOKEN_OP_LEN, "#", Line);
@@ -108,6 +112,9 @@ namespace Complier.CodeAnalyzer
             throw new SyntaxException($"Lexer Error! Unexpected char [{Chunk[0]}] !", Line);
 
         }
+
+
+      
 
         private Token ScanNumber()
         {

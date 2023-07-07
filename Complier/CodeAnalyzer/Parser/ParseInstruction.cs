@@ -161,6 +161,8 @@ namespace Complier.CodeAnalyzer.Parser
             if (first_token.IsReg_Rn())
             {
                 lexer.NextTokenOfKind(TokenKind.TOKEN_SEP_COMMA);
+                ChangeIfNextTokenIsDollarToNumber();
+
                 var rel_token = lexer.NextTokenOfNumberOrSymbol();
                 return new DJNE_Instruction(
                       currentAddress,
@@ -174,6 +176,8 @@ namespace Complier.CodeAnalyzer.Parser
             if(first_token.IsNumberOrSymbol())
             {
                 lexer.NextTokenOfKind(TokenKind.TOKEN_SEP_COMMA);
+                ChangeIfNextTokenIsDollarToNumber();
+
                 var rel_token = lexer.NextTokenOfNumberOrSymbol();
                 return new DJNE_Instruction(
                       currentAddress,
@@ -199,7 +203,9 @@ namespace Complier.CodeAnalyzer.Parser
                 if(second_token.IsNumberOrSymbol())
                 {
                     lexer.NextTokenOfKind(TokenKind.TOKEN_SEP_COMMA);
-                    var end_token=lexer.NextTokenOfNumberOrSymbol();
+                    ChangeIfNextTokenIsDollarToNumber();
+
+                    var end_token =lexer.NextTokenOfNumberOrSymbol();
                     return new CJNE_Instruction(
                         currentAddress, 
                         first_token, 
@@ -213,7 +219,9 @@ namespace Complier.CodeAnalyzer.Parser
                 {
                     var data_token=lexer.NextTokenOfNumberOrSymbol();
                     lexer.NextTokenOfKind(TokenKind.TOKEN_SEP_COMMA);
-                    var rel_token=lexer.NextTokenOfNumberOrSymbol();
+                    ChangeIfNextTokenIsDollarToNumber();
+
+                    var rel_token =lexer.NextTokenOfNumberOrSymbol();
                     return new CJNE_Instruction(
                        currentAddress,
                        first_token,
@@ -231,6 +239,8 @@ namespace Complier.CodeAnalyzer.Parser
                 lexer.NextTokenOfKind(TokenKind.TOKEN_OP_LEN);
                 var data_token=lexer.NextTokenOfNumberOrSymbol();
                 lexer.NextTokenOfKind(TokenKind.TOKEN_SEP_COMMA);
+                ChangeIfNextTokenIsDollarToNumber();
+
                 var rel_token = lexer.NextTokenOfNumberOrSymbol();
                 return new CJNE_Instruction(
                       currentAddress,
@@ -248,6 +258,8 @@ namespace Complier.CodeAnalyzer.Parser
                 lexer.NextTokenOfKind(TokenKind.TOKEN_OP_LEN);
                 var data_token = lexer.NextTokenOfNumberOrSymbol();
                 lexer.NextTokenOfKind(TokenKind.TOKEN_SEP_COMMA);
+                ChangeIfNextTokenIsDollarToNumber();
+
                 var rel_token = lexer.NextTokenOfNumberOrSymbol();
                 return new CJNE_Instruction(
                       currentAddress,
@@ -277,6 +289,8 @@ namespace Complier.CodeAnalyzer.Parser
                 has_bit_dot = true;
             }
             lexer.NextTokenOfKind(TokenKind.TOKEN_SEP_COMMA);
+            ChangeIfNextTokenIsDollarToNumber();
+
             var rel_token = lexer.NextTokenOfNumberOrSymbol();
             if (!has_bit_dot)
             {
@@ -310,6 +324,8 @@ namespace Complier.CodeAnalyzer.Parser
                 has_bit_dot = true;
             }
             lexer.NextTokenOfKind(TokenKind.TOKEN_SEP_COMMA);
+            ChangeIfNextTokenIsDollarToNumber();
+
             var rel_token = lexer.NextTokenOfNumberOrSymbol();
             if (!has_bit_dot)
             {
@@ -342,6 +358,8 @@ namespace Complier.CodeAnalyzer.Parser
                 has_bit_dot = true;
             }
             lexer.NextTokenOfKind(TokenKind.TOKEN_SEP_COMMA);
+            ChangeIfNextTokenIsDollarToNumber();
+
             var rel_token = lexer.NextTokenOfNumberOrSymbol();
             if(!has_bit_dot)
             {
@@ -363,51 +381,82 @@ namespace Complier.CodeAnalyzer.Parser
 
         private Instruction ParseOp_JNC()
         {
+            ChangeIfNextTokenIsDollarToNumber();
+
             var rel_token = lexer.NextTokenOfNumberOrSymbol();
             return new JNC_Instruction(CurrentAddress, rel_token, lexer.Line);
         }
 
         private Instruction ParseOp_JC()
         {
+            ChangeIfNextTokenIsDollarToNumber();
+
             var rel_token = lexer.NextTokenOfNumberOrSymbol();
             return new JC_Instruction(CurrentAddress, rel_token, lexer.Line);
         }
 
         private Instruction ParseOp_JNZ()
         {
+            ChangeIfNextTokenIsDollarToNumber();
+
             var rel_token = lexer.NextTokenOfNumberOrSymbol();
             return new JNZ_Instruction(CurrentAddress, rel_token, lexer.Line);
         }
 
         private Instruction ParseOp_JZ()
         {
+            ChangeIfNextTokenIsDollarToNumber();
+
             var rel_token = lexer.NextTokenOfNumberOrSymbol();
             return new JZ_Instruction(CurrentAddress, rel_token, lexer.Line);
         }
-
+        public void ChangeIfNextTokenIsDollarToNumber()
+        {
+            Token next_token =lexer.LookAhead();
+            if (next_token.Kind == TokenKind.TOKEN_SEP_DOLLAR)
+            {
+                next_token.Kind = TokenKind.Number;
+                next_token.Value = CurrentAddress.ToString();
+            }
+        }
         private Instruction ParseOp_JMP()
         {
+            ChangeIfNextTokenIsDollarToNumber();
+
+            var next_token = lexer.NextToken();
+
+            if (next_token.IsNumberOrSymbol())
+            {
+                return new JMP_Instruction(CurrentAddress, next_token,0, lexer.Line,2);
+            }
+           
             lexer.NextTokenOfKind(TokenKind.TOKEN_SEP_ARE);
             lexer.NextTokenOfKind(TokenKind.REG_A);
             lexer.NextTokenOfKind(TokenKind.TOKEN_SEP_PLUS);
             lexer.NextTokenOfKind(TokenKind.REG_DPTR);
-            return new JMP_Instruction(lexer.Line);
+            return new JMP_Instruction(CurrentAddress,null,1,lexer.Line);
         }
 
         private Instruction ParseOp_SJMP()
         {
+            ChangeIfNextTokenIsDollarToNumber();
+
             var rel_token = lexer.NextTokenOfNumberOrSymbol();
             return new SJMP_Instruction(CurrentAddress,rel_token, lexer.Line);
         }
 
         private Instruction ParseOp_LJMP()
         {
+            ChangeIfNextTokenIsDollarToNumber();
+
             var address16_token = lexer.NextTokenOfNumberOrSymbol();
             return new LJMP_Instruction(address16_token, lexer.Line);
         }
 
         private Instruction ParseOp_AJMP()
         {
+            ChangeIfNextTokenIsDollarToNumber();
+
             var address11_token = lexer.NextTokenOfNumberOrSymbol();
             return new AJMP_Instruction(address11_token, lexer.Line);
         }

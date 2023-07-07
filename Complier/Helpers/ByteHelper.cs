@@ -188,10 +188,14 @@ namespace Complier.Helpers
             {
                 address11= NumberTokenToInt(token);
             }
-            var symbol = SymbolTableFactory.Current.FindSymbolOfKind(token, e => e.Type == SymbolType.CONST || e.Type == SymbolType.LABEL);
+            else
+            {
+                var symbol = SymbolTableFactory.Current.FindSymbolOfKind(token, e => e.Type == SymbolType.CONST || e.Type == SymbolType.LABEL);
 
 
-            address11 = symbol.Value;
+                address11 = symbol.Value;
+            }
+         
 
 
 
@@ -252,10 +256,14 @@ namespace Complier.Helpers
             {
                 address11 = NumberTokenToInt(token);
             }
-            var symbol = SymbolTableFactory.Current.FindSymbolOfKind(token, e => e.Type == SymbolType.CONST || e.Type == SymbolType.LABEL);
+            else
+            {
+                var symbol = SymbolTableFactory.Current.FindSymbolOfKind(token, e => e.Type == SymbolType.CONST || e.Type == SymbolType.LABEL);
 
 
-            address11 = symbol.Value;
+                address11 = symbol.Value;
+            }
+            
 
 
 

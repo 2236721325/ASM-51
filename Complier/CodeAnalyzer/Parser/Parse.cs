@@ -36,7 +36,7 @@ namespace Complier.CodeAnalyzer.Parser
             {
                 var token = lexer.LookAhead();
 
-                if (token.Kind == TokenKind.Directive_END)
+                if (token.Kind == TokenKind.EOF)
                 {
                     break;
                 }
@@ -44,6 +44,10 @@ namespace Complier.CodeAnalyzer.Parser
                 
                 var every = ParseEvery();
                 instructions.Add(new InstructionWrap(currentAddress, every));
+                if(every is End_Directive)
+                {
+                    break;
+                }
                 currentAddress += every.HexCodeLength;
             }
 
@@ -88,6 +92,7 @@ namespace Complier.CodeAnalyzer.Parser
                 case TokenKind.OP_RET:
                 case TokenKind.OP_RETI:
                 case TokenKind.OP_AJMP:
+                case TokenKind.OP_JMP:
                 case TokenKind.OP_LJMP:
                 case TokenKind.OP_SJMP:
                 case TokenKind.OP_JZ:
