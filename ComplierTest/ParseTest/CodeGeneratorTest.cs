@@ -24,7 +24,9 @@ namespace ComplierTest.ParseTest
 
         [Theory]
         //[InlineData("main")]
-        [InlineData("test_bit")]
+        //[InlineData("test_bit")]
+        [InlineData("test_jmp")]
+
         public async void TestSingelFile(string file_name)
         {
             string dir = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "test/file");

@@ -421,6 +421,8 @@ namespace Complier.CodeAnalyzer.Parser
         }
         private Instruction ParseOp_JMP()
         {
+            
+            
             ChangeIfNextTokenIsDollarToNumber();
 
             var next_token = lexer.NextToken();

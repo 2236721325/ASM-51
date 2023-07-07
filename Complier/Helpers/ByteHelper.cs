@@ -286,12 +286,9 @@ namespace Complier.Helpers
             if (token.Kind == TokenKind.TOKEN_Symbol)
             {
                 var symbol = SymbolTableFactory.Current.FindSymbolOfKind(token, e => e.Type == SymbolType.CONST || e.Type == SymbolType.LABEL);
-                var bytes = Zip(BitConverter.GetBytes(symbol.Value));
-                if (bytes.Length != 1)
-                {
-                    throw ThrowHelper.UnexpectedToken(token, "Rel Value Must 1 byte");
-                }
-                return (byte)(bytes[0] - current_address);
+                var value = symbol.Value;
+              
+                return (byte)(symbol.Value- current_address);
             }
             throw ThrowHelper.UnexpectedToken(token);
         }
