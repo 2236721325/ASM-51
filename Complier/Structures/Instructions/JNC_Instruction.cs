@@ -28,7 +28,7 @@ namespace Complier.Structures.Instructions
 
         public override string ToString()
         {
-            return "{JZ_Instruction:{" + $"HexCode={GetHexCode().GetString()} ,Line={Line}" + "} }";
+            return "{JNC_Instruction:{" + $"HexCode={GetHexCode().GetString()} ,Line={Line}" + "} }";
         }
     }
 

@@ -45,7 +45,7 @@ namespace Complier.Structures.Instructions
 
         public override string ToString()
         {
-            return "{CJNE_Instruction:{" + $"HexCode={GetHexCode().GetString()} ,Line={Line}" + "} }";
+            return "{DJNE_Instruction:{" + $"HexCode={GetHexCode().GetString()} ,Line={Line}" + "} }";
         }
     }
 

@@ -42,7 +42,7 @@ namespace Complier.Structures.Instructions
         }
         public override string ToString()
         {
-            return "{CLR_Instruction:{" + $"HexCode={GetHexCode().GetString()} ,Line={Line}" + "} }";
+            return "{CPL_Instruction:{" + $"HexCode={GetHexCode().GetString()} ,Line={Line}" + "} }";
         }
     }
 

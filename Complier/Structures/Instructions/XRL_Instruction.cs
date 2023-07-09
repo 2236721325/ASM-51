@@ -65,7 +65,7 @@ namespace Complier.Structures.Instructions
 
         public override string ToString()
         {
-            return "{ANL_Instruction:{" + $"HexCode={GetHexCode().GetString()} ,Line={Line}, Type={Type}" + "} }";
+            return "{XRL_Instruction:{" + $"HexCode={GetHexCode().GetString()} ,Line={Line}, Type={Type}" + "} }";
         }
     }
 
