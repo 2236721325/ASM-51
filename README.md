@@ -8,6 +8,9 @@
 	ASM-51 [file_name]
 	会生成 .hex 文件
 	目前已经基本可以使用 要做的是去修复未知的bug
+ ## 演示视频
+ ( https://www.bilibili.com/video/BV1XW4y1f7BQ/?vd_source=f6f56669995eeadc8f4da105c926dfc7 )
+
 ## 说明
 	因为以后可能想写个虚拟机 所以有些的代码对于纯粹的 汇编->机器码 这个过程是无用的 对于编写虚拟机是有用的。 
 ## 目前进度 100%
